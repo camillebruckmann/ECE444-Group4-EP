@@ -1,30 +1,30 @@
-# Contributing to A Star
-We love your input! We want to make contributing to this project as easy and transparent as possible, whether it's:
+## Contributing to Education Pathways
+Thank you for investing your time in contributing to our project! Your input will help make Education Pathways a more useful app for students. We want to make contributing to this project as easy and transparent as possible, whether it's to:
 
-- Reporting a bug
-- Discussing the current state of the code
-- Submitting a fix
-- Proposing new features
-- Becoming a maintainer
+- Propose a new feature
+- Report a bug
+- Submit a fix
+- Discuss the current state of the code
 
-## We Develop with Github
-We use github to host code, to track issues and feature requests, as well as accept pull requests.
+## We Develop with GitHub
+We use GitHub to host code, to track issues and feature requests, as well as accept pull requests.
 
-## Pull Requests and A star
-Pull requests are the best way to propose changes to the codebase (we use [Github Flow](https://guides.github.com/introduction/flow/index.html)). We actively welcome your pull requests:
+## Pull Requests
+Pull requests are the best way to propose changes to the codebase. We actively welcome your pull requests:
 
-1. Fork the repo and create your branch from `master`.
+1. Fork the repo and create your branch from `main`.
 2. If you've added code that should be tested, add tests.
 3. If you've changed APIs, update the documentation.
-4. Ensure the test suite passes.
-5. Make sure your code lints.
-6. Issue that pull request!
+4. Issue that pull request!
 
 ## Any contributions you make will be under the MIT Software License
-In short, when you submit code changes, your submissions are understood to be under the same [MIT License](http://choosealicense.com/licenses/mit/) that covers the project. Feel free to contact the maintainers if that's a concern.
+In short, when you submit code changes, your submissions are understood to be under the same MIT License that covers the project. Feel free to contact the maintainers if that's a concern.
 
-## Report bugs using Github's [issues](https://github.com/ECE444-2021Fall/project1-education-pathways-group-8-the-red-flags/issues)
-We use GitHub issues to track public bugs. Report a bug by [opening a new issue](); it's that easy!
+## Accuracy and Reliability of Data
+Ensure that all code you write does not cause the application to report inaccurate data, such as false course information. Education Pathways is a platform that students will rely on to plan their course schedules, so it is critical that the reliability of the website is maintained at a high standard.  
+
+## Report bugs using Github's [issues](https://github.com/camillebruckmann/ECE444-Group4-EP/issues)
+We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/camillebruckmann/ECE444-Group4-EP/issues/new); it's that easy!
 
 ## Write bug reports with detail, background, and sample code
 Ensure that when you write a bug report that you include a [reprex](https://stackoverflow.com/help/minimal-reproducible-example). 
@@ -38,8 +38,6 @@ Ensure that when you write a bug report that you include a [reprex](https://stac
 - What you expected would happen
 - What actually happens
 - Notes (possibly including why you think this might be happening, or stuff you tried that didn't work)
-
-People *love* thorough bug reports. I'm not even kidding.
 
 ## Use a Consistent Coding Style
 For this Project, we will be using coding guidelines from Python's official standards the [PEP8 Standard](https://www.python.org/dev/peps/pep-0008/). You can easily check to see how close you are to the PEP8 Standard by using pylint!
