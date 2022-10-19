@@ -1,5 +1,5 @@
 import sqlite3
-from sqlite3 import Error
+from sqlite3 import Error, connect
 
 
 def create_connection(db_file):
@@ -32,6 +32,49 @@ def select_all_courses(conn):
     for row in rows:
         print(row)
 
+def select_course_by_faculty(conn, query): 
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM Courses WHERE faculty = ?", (query,))
+    rows = cur.fetchall()
+
+    if not rows: 
+        return("No results")
+
+    for row in rows:
+        print(row)
+
+    return rows
+
+#Queries: 0 = N/A, 1 = St. George, 2 = Missisauga, 3 = Scarborough
+def select_course_by_location(conn, query): 
+    cur = conn.cursor()
+    cur.execute("SELECT Courses.course_code, course_name, faculty \
+                FROM Courses \
+                INNER JOIN Sessions \
+                ON Courses.course_code = Sessions.course_code \
+                WHERE campus = ?", (query,))
+    rows = cur.fetchall()
+
+    if not rows: 
+        return("No results")
+
+    return rows
+
+#Queries: 0 = In Person, 1 = Online
+def select_course_by_delivery(conn, query): 
+    cur = conn.cursor()
+    cur.execute("SELECT Courses.course_code, course_name, faculty \
+                FROM Courses \
+                INNER JOIN Sessions \
+                ON Courses.course_code = Sessions.course_code \
+                WHERE delivery = ?", (query,))
+    rows = cur.fetchall()
+
+    if not rows: 
+        return("No results")
+
+    return rows
+
 
 def main():
     database = r"ep_database"
@@ -42,6 +85,8 @@ def main():
         print("1. Query all courses")
         print(conn)
         select_all_courses(conn)
+        print("2. Test")
+        select_course_by_location(conn, 1)
 
 
 if __name__ == '__main__':

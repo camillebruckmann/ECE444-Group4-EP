@@ -18,7 +18,7 @@ c.execute('''
           [section] INTEGER, 
           [course_code] INTEGER, 
           [campus] INTEGER, 
-          [delivery] INTEGER, 
+          [delivery] INTEGER, git
           [synchronous] INTEGER, 
           FOREIGN KEY(course_code) REFERENCES Courses(course_code)
           )
