@@ -76,6 +76,7 @@ def select_course_by_delivery(conn, query):
     return rows
 
 
+#For testing purposes
 def main():
     database = r"ep_database"
 
