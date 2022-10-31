@@ -30,6 +30,21 @@
   border: none;
   height: 3em;
   width: 7em;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+#dropdown-basic {
+  background-color: #1c3e6e;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  border: none;
+  height: 3em;
+  width: 7em;
+  position: absolute;
+  margin-top: 10;
 }
 
 .text-input {
@@ -39,4 +54,10 @@
   border: 2px solid #c4c4c4;
   margin-right: 1%;
   padding-left: 2%;
+}
+
+h3 {
+  align-items: 'center';
+  margin-top: 30px;
+
 }

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Multiselect from 'multiselect-react-dropdown';
 import axios from 'axios'
 import Result from './Results'
 import './css/Result.css'
@@ -17,6 +18,7 @@ class SearchResultDisplay extends Component{
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit2 = this.handleSubmit2.bind(this);
   }
 
   handleChange(event) {
@@ -26,6 +28,11 @@ class SearchResultDisplay extends Component{
   handleSubmit(event) {
     event.preventDefault();
     this.getData(this.state.input)
+  }
+
+  handleSubmit2(event) {
+    event.preventDefault();
+    this.getData("hi")
   }
 
   getData = (input) => {
@@ -88,7 +95,7 @@ class SearchResultDisplay extends Component{
     return (
       <div className="SearchQuery">
         <div style={{ marginTop: "10%" }}>
-            <h1> Education Pathways</h1>
+            <h1> Education pathways</h1>
             <br></br>
             {/* <div className = "body_text">
       Welcome to CARTE's in-development tool for course selection at UofT. Education Pathways allows for more intelligent course searching, by matching not just the terms you search, but ones relevant to them. The more terms you search for, the more relevant your results will be! Even try searching across disciplines for the courses that best cover each.
@@ -99,10 +106,74 @@ We are looking for feedback to improve Education Pathways and make it more usefu
 
 
       </div> */}
-            <form onSubmit={this.handleSubmit} className={"search"}>
+            <form className={"search"}>
+            
                 <input placeholder={"Search for course code"} className={"text-input"} type="text" value={this.state.input} onChange={this.handleChange} />
-                <input type="submit" value="Search" className={"submit-button"}/>
+                <input type="submit" value="Search" onClick={this.handleSubmit} className={"submit-button"}/>
+                <Multiselect className={"filters"}
+                  displayValue="key"
+                  groupBy="cat"
+                  onKeyPressFn={(event)=>{console.log(event)}}
+                  onRemove={(event)=>{console.log(event)}}
+                  onSearch={(event)=>{console.log(event)}}
+                  onSelect={(event)=>{console.log(event)}}
+                  placeholder="Click to add filters"
+                  hidePlaceholder = 'true'
+                  style={{
+                    chips: {
+                      background: '#05285e',
+                      color: 'white'
+                    },
+                    multiselectContainer: {
+                      'margin': 'auto'
+                    },
+                    searchBox: {
+                      border: 'none',
+                      width: '49%',
+                      height: '3em',
+                      'align-items': 'center',
+                      'border': '2px solid #a6c9ff',
+                      'border-radius': '15px',
+                      'background-color': '#a6c9ff',
+                      'margin': '10px auto',
+                      'padding-left': '2%'
+                    }
+                  }}
+                  options={[
+                    {
+                      cat: 'Session',
+                      key: 'Fall'
+                    },
+                    {
+                      cat: 'Session',
+                      key: 'Winter'
+                    },
+                    {
+                      cat: 'Session',
+                      key: 'Summer'
+                    },
+                    {
+                      cat: 'Campus',
+                      key: 'St. George'
+                    },
+                    {
+                      cat: 'Campus',
+                      key: 'Mississauga'
+                    },
+                    {
+                      cat: 'Campus',
+                      key: 'Scarborough'
+                    },
+                    {
+                      cat: 'Group 2',
+                      key: 'Option 7'
+                    }
+                  ]}
+                  
+                  /> 
             </form>
+            
+            
         </div>
 
         <div className={"search-result-display"} >
