@@ -68,5 +68,12 @@ c.execute('''
            PRIMARY KEY(session_id, ta_id)
            )
           ''')
-                     
+
+c.execute('''
+          CREATE TABLE IF NOT EXISTS Prerequisites
+          ([course_code] TEXT PRIMARY KEY,
+           [prerequisite_course_code] TEXT
+           )
+          ''')
+
 conn.commit()

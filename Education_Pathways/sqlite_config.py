@@ -29,8 +29,7 @@ def select_all_courses(conn):
 
     rows = cur.fetchall()
 
-    for row in rows:
-        print(row)
+    return rows
 
 def select_course_by_faculty(conn, query): 
     cur = conn.cursor()
@@ -39,9 +38,6 @@ def select_course_by_faculty(conn, query):
 
     if not rows: 
         return("No results")
-
-    for row in rows:
-        print(row)
 
     return rows
 
@@ -75,6 +71,39 @@ def select_course_by_delivery(conn, query):
 
     return rows
 
+def select_professor_by_course_session_id(conn, query): 
+    cur = conn.cursor()
+    cur.execute("SELECT * from Instructors \
+                WHERE instructor_id = (SELECT instructor_id FROM \
+                instructor_sessions WHERE session_id = ?)", (query,))
+    rows = cur.fetchall()
+    return rows
+
+def select_all_prerequisites_for_course(conn, query): 
+    cur = conn.cursor()
+    cur.execute("SELECT * from Courses \
+                WHERE course_code = (SELECT prerequisite_course_code FROM \
+                prerequisites WHERE course_code = ?)", (query,))
+    rows = cur.fetchall()
+    return rows
+
+def select_all_sessions(conn): 
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM Sessions")
+    rows = cur.fetchall()
+    return rows
+
+def select_all_instructor_sessions(conn): 
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM instructor_sessions")
+    rows = cur.fetchall()
+    return rows
+
+def select_all_instructors(conn): 
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM Instructors")
+    rows = cur.fetchall()
+    return rows
 
 #For testing purposes
 def main():
@@ -85,9 +114,17 @@ def main():
     with conn:
         print("1. Query all courses")
         print(conn)
-        select_all_courses(conn)
-        print("2. Test")
-        select_course_by_location(conn, 1)
+        print(select_all_courses(conn))
+        #print("2. Test")
+        print('2')
+        print(select_all_sessions(conn))
+        print('3')
+        print(select_all_instructor_sessions(conn))
+        print('4')
+        print(select_all_instructors(conn))
+        print('5')
+        print(select_professor_by_course_session_id(conn, 1))
+        #select_course_by_location(conn, 1)
 
 
 if __name__ == '__main__':
