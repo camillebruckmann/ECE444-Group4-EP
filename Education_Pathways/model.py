@@ -7,7 +7,7 @@ class Course(db.Document):
     name = db.StringField(required=True)
     description = db.StringField(required=True)
     syllabus = db.URLField()
-    prereq = db.ListField()
+    prereq = db.ListField() 
     coreq = db.ListField()
     exclusion = db.ListField()
     keyword = db.StringField(required=True)

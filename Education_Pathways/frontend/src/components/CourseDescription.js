@@ -39,7 +39,7 @@ class CourseDescriptionPage extends Component {
     console.log("pass in course code: ", this.props.match.params.code)
 
     axios.get(`https://assignment-1-starter-template.herokuapp.com/course/details?code=${this.props.match.params.code}`, {
-      code: this.props.course_code
+      code: this.props.course_code 
     })
       .then(res => {
         console.log(res.data)
@@ -86,6 +86,7 @@ class CourseDescriptionPage extends Component {
         } else {
           this.setState({exclusions : res.data.course.exclusion})
         }
+
         let syllabus_link = "http://courses.skule.ca/course/" + this.props.code
         this.setState({syllabus : syllabus_link})
 
@@ -107,6 +108,7 @@ class CourseDescriptionPage extends Component {
       newWindow.opener = null;
     }
   }
+
 
 	render() {
 		return(
