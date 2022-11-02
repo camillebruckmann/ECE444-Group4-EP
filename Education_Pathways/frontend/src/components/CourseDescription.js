@@ -24,6 +24,7 @@ class CourseDescriptionPage extends Component {
       graph : "",
       course_description: "",
       syllabus: "",
+      peerfeedback: "",
       prerequisites: "",
       corequisites: "",
       exclusions: "",
@@ -87,8 +88,11 @@ class CourseDescriptionPage extends Component {
           this.setState({exclusions : res.data.course.exclusion})
         }
 
-        let syllabus_link = "http://courses.skule.ca/course/" + this.props.code
+        let syllabus_link = "http://courses.skule.ca/course/" + this.props.match.params.code
         this.setState({syllabus : syllabus_link})
+
+        let peerfeedback_link = "http://uofthub.ca/course/" + this.props.match.params.code.slice(0,6)
+        this.setState({peerfeedback : peerfeedback_link})
 
         let temp_graph = []
         //temp_graph.push(<ShowGraph graph_src={this.state.graph}></ShowGraph>)
@@ -104,6 +108,13 @@ class CourseDescriptionPage extends Component {
 
   openLink = () => {
     const newWindow = window.open(this.state.syllabus, '_blacnk', 'noopener,noreferrer');
+    if (newWindow) {
+      newWindow.opener = null;
+    }
+  }
+
+  openLinkPeer = () => {
+    const newWindow = window.open(this.state.peerfeedback, '_blacnk', 'noopener,noreferrer');
     if (newWindow) {
       newWindow.opener = null;
     }
@@ -135,6 +146,10 @@ class CourseDescriptionPage extends Component {
             <Col className="col-item">
               <h3>Past Tests and Syllabi</h3>
               <button className={"syllabus-link"} onClick={this.openLink}>View</button>
+            </Col>
+            <Col className="col-item">
+              <h3>Peer Feedback</h3>
+              <button className={"peerfeedback-link"} onClick={this.openLinkPeer}>View</button>
             </Col>
           </Row>
           <Row className="col-item course-description">
