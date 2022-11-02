@@ -24,7 +24,8 @@ class CourseDescriptionPage extends Component {
       graph : "",
       course_description: "",
       syllabus: "",
-      peerfeedback: "",
+      redditpeerfeedback: "",
+      uofthubfeedback: "",
       prerequisites: "",
       corequisites: "",
       exclusions: "",
@@ -91,8 +92,11 @@ class CourseDescriptionPage extends Component {
         let syllabus_link = "http://courses.skule.ca/course/" + this.props.match.params.code
         this.setState({syllabus : syllabus_link})
 
-        let peerfeedback_link = "http://uofthub.ca/course/" + this.props.match.params.code.slice(0,6)
-        this.setState({peerfeedback : peerfeedback_link})
+        let uofthubpeerfeedback_link = "http://uofthub.ca/course/" + this.props.match.params.code.slice(0,6)
+        this.setState({uofthubfeedback : uofthubpeerfeedback_link})
+
+        let peerfeedback_link = "http://www.reddit.com/r/UofT/search/?q=" + this.props.match.params.code.slice(0,6) + "&restrict_sr=1&sr_nsfw=&include_over_18=1" 
+        this.setState({redditpeerfeedback : peerfeedback_link})
 
         let temp_graph = []
         //temp_graph.push(<ShowGraph graph_src={this.state.graph}></ShowGraph>)
@@ -114,7 +118,14 @@ class CourseDescriptionPage extends Component {
   }
 
   openLinkPeer = () => {
-    const newWindow = window.open(this.state.peerfeedback, '_blacnk', 'noopener,noreferrer');
+    const newWindow = window.open(this.state.redditpeerfeedback, '_blacnk', 'noopener,noreferrer');
+    if (newWindow) {
+      newWindow.opener = null;
+    }
+  }
+
+  openLinkPeerUofTHub = () => {
+    const newWindow = window.open(this.state.uofthubfeedback, '_blacnk', 'noopener,noreferrer');
     if (newWindow) {
       newWindow.opener = null;
     }
@@ -148,8 +159,12 @@ class CourseDescriptionPage extends Component {
               <button className={"syllabus-link"} onClick={this.openLink}>View</button>
             </Col>
             <Col className="col-item">
-              <h3>Peer Feedback</h3>
+              <h3>Course Queries on Reddit</h3>
               <button className={"peerfeedback-link"} onClick={this.openLinkPeer}>View</button>
+            </Col>
+            <Col className="col-item">
+              <h3>Course Reviews on UofTHub.ca</h3>
+              <button className={"uofthubpeerfeedback-link"} onClick={this.openLinkPeerUofTHub}>View</button>
             </Col>
           </Row>
           <Row className="col-item course-description">
