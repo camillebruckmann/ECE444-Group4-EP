@@ -26,6 +26,7 @@ class CourseDescriptionPage extends Component {
       syllabus: "",
       redditpeerfeedback: "",
       uofthubfeedback: "",
+      professor: "",
       prerequisites: "",
       corequisites: "",
       exclusions: "",
@@ -102,6 +103,7 @@ class CourseDescriptionPage extends Component {
         //temp_graph.push(<ShowGraph graph_src={this.state.graph}></ShowGraph>)
         this.setState({graphics: temp_graph})
 
+        this.setState({professor: res.data.course.professor})
 
     })
 
@@ -171,6 +173,10 @@ class CourseDescriptionPage extends Component {
             <h3>Course Description</h3>
             <p>{this.state.course_description}</p>
           </Row>
+          <Row className="col-item course-professor">
+            <h3>Course Professor</h3>
+            <p>{this.state.professor}</p>
+          </Row>
           <Row className="col-item course-requisite">
             <Row>
               <h3>Course Requisites</h3>
@@ -189,12 +195,12 @@ class CourseDescriptionPage extends Component {
                 <p>{this.state.exclusions}</p>
               </Col>
             </Row>
-            <Row>
+            <Row> 
               <div className={"req-graph"}>
                 <img style={{width: "70%", marginBottom: "3%"}} alt="" src={requisite_label}></img>
                 <img src={`data:image/jpeg;base64,${this.state.graph}`} alt="" ></img>
-              </div>
-            </Row>
+              </div> 
+            </Row> 
           </Row>
         </Container>
       </div>

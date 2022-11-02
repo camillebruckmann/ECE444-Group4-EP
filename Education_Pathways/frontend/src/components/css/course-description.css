@@ -71,7 +71,7 @@ p {
   color: #5C779C;
 }
 
-.course-template .course-description, .course-requisite {
+.course-template .course-description, .course-requisite, course-professor {
   margin-left: 0;
 }
 
