@@ -27,6 +27,7 @@ class CourseDescriptionPage extends Component {
       redditpeerfeedback: "",
       uofthubfeedback: "",
       professor: "",
+      relatedcareers: "",
       prerequisites: "",
       corequisites: "",
       exclusions: "",
@@ -104,6 +105,7 @@ class CourseDescriptionPage extends Component {
         this.setState({graphics: temp_graph})
 
         this.setState({professor: res.data.course.professor})
+        this.setState({relatedcareers: res.data.course.relatedcareers})
 
     })
 
@@ -176,6 +178,10 @@ class CourseDescriptionPage extends Component {
           <Row className="col-item course-professor">
             <h3>Course Professor</h3>
             <p>{this.state.professor}</p>
+          </Row>
+          <Row className="col-item course-relatedcareers">
+            <h3>Related Careers</h3>
+            <p>{this.state.relatedcareers}</p>
           </Row>
           <Row className="col-item course-requisite">
             <Row>
