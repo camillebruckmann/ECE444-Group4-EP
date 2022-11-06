@@ -37,7 +37,9 @@ class SearchResultDisplay extends Component{
 
   getData = (input) => {
     API.get(`/searchc?input=${input}`)
+    // axios.get(`https://assignment-1-starter-template.herokuapp.com/searchc?input=${input}`)
       .then(res => {
+        // console.log(`it is ${res.status}`)
         if (res.status === 200) {
           this.setState({results: []})
           console.log(res.data.length)
@@ -95,7 +97,7 @@ class SearchResultDisplay extends Component{
     return (
       <div className="SearchQuery">
         <div style={{ marginTop: "10%" }}>
-            <h1> Education pathways</h1>
+            <h1> Education Pathways</h1>
             <br></br>
             {/* <div className = "body_text">
       Welcome to CARTE's in-development tool for course selection at UofT. Education Pathways allows for more intelligent course searching, by matching not just the terms you search, but ones relevant to them. The more terms you search for, the more relevant your results will be! Even try searching across disciplines for the courses that best cover each.
@@ -106,7 +108,7 @@ We are looking for feedback to improve Education Pathways and make it more usefu
 
 
       </div> */}
-            <form className={"search"}>
+            <form onSubmit={this.handleSubmit} className={"search"}>
             
                 <input placeholder={"Search for course code"} className={"text-input"} type="text" value={this.state.input} onChange={this.handleChange} />
                 <input type="submit" value="Search" onClick={this.handleSubmit} className={"submit-button"}/>
