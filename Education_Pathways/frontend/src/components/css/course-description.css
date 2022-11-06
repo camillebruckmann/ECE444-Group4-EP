@@ -39,6 +39,20 @@ p {
   padding-bottom: 3%;
 }
 
+.course-template .peerfeedback {
+  vertical-align: center;
+  padding-top: 3%;
+  padding-bottom: 3%;
+}
+
+.course-template .uofthubpeerfeedback {
+  vertical-align: center;
+  padding-top: 3%;
+  padding-bottom: 3%;
+}
+
+
+
 .course-template .col-item h3 {
   margin-top: 30px;
   margin-left: 4%;
@@ -57,7 +71,7 @@ p {
   color: #5C779C;
 }
 
-.course-template .course-description, .course-requisite {
+.course-template .course-description, .course-requisite, course-professor, course-relatedcareers {
   margin-left: 0;
 }
 
@@ -77,6 +91,30 @@ p {
 }
 
 .syllabus-link {
+  margin-top: 2%;
+    border-radius: 15px;
+    background-color: #1C3E6E;
+    color: white;
+    width: 8em;
+    height: 3em;
+    border: none;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.peerfeedback-link {
+  margin-top: 2%;
+    border-radius: 15px;
+    background-color: #1C3E6E;
+    color: white;
+    width: 8em;
+    height: 3em;
+    border: none;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.uofthubpeerfeedback-link {
   margin-top: 2%;
     border-radius: 15px;
     background-color: #1C3E6E;

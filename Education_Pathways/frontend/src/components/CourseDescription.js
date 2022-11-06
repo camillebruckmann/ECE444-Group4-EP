@@ -24,6 +24,10 @@ class CourseDescriptionPage extends Component {
       graph : "",
       course_description: "",
       syllabus: "",
+      redditpeerfeedback: "",
+      uofthubfeedback: "",
+      professor: "",
+      relatedcareers: "",
       prerequisites: "",
       corequisites: "",
       exclusions: "",
@@ -39,7 +43,7 @@ class CourseDescriptionPage extends Component {
     console.log("pass in course code: ", this.props.match.params.code)
 
     axios.get(`https://assignment-1-starter-template.herokuapp.com/course/details?code=${this.props.match.params.code}`, {
-      code: this.props.course_code
+      code: this.props.course_code 
     })
       .then(res => {
         console.log(res.data)
@@ -86,13 +90,22 @@ class CourseDescriptionPage extends Component {
         } else {
           this.setState({exclusions : res.data.course.exclusion})
         }
-        let syllabus_link = "http://courses.skule.ca/course/" + this.props.code
+
+        let syllabus_link = "http://courses.skule.ca/course/" + this.props.match.params.code
         this.setState({syllabus : syllabus_link})
+
+        let uofthubpeerfeedback_link = "http://uofthub.ca/course/" + this.props.match.params.code.slice(0,6)
+        this.setState({uofthubfeedback : uofthubpeerfeedback_link})
+
+        let peerfeedback_link = "http://www.reddit.com/r/UofT/search/?q=" + this.props.match.params.code.slice(0,6) + "&restrict_sr=1&sr_nsfw=&include_over_18=1" 
+        this.setState({redditpeerfeedback : peerfeedback_link})
 
         let temp_graph = []
         //temp_graph.push(<ShowGraph graph_src={this.state.graph}></ShowGraph>)
         this.setState({graphics: temp_graph})
 
+        this.setState({professor: res.data.course.professor})
+        this.setState({relatedcareers: res.data.course.relatedcareers})
 
     })
 
@@ -107,6 +120,21 @@ class CourseDescriptionPage extends Component {
       newWindow.opener = null;
     }
   }
+
+  openLinkPeer = () => {
+    const newWindow = window.open(this.state.redditpeerfeedback, '_blacnk', 'noopener,noreferrer');
+    if (newWindow) {
+      newWindow.opener = null;
+    }
+  }
+
+  openLinkPeerUofTHub = () => {
+    const newWindow = window.open(this.state.uofthubfeedback, '_blacnk', 'noopener,noreferrer');
+    if (newWindow) {
+      newWindow.opener = null;
+    }
+  }
+
 
 	render() {
 		return(
@@ -134,10 +162,26 @@ class CourseDescriptionPage extends Component {
               <h3>Past Tests and Syllabi</h3>
               <button className={"syllabus-link"} onClick={this.openLink}>View</button>
             </Col>
+            <Col className="col-item">
+              <h3>Course Queries on Reddit</h3>
+              <button className={"peerfeedback-link"} onClick={this.openLinkPeer}>View</button>
+            </Col>
+            <Col className="col-item">
+              <h3>Course Reviews on UofTHub.ca</h3>
+              <button className={"uofthubpeerfeedback-link"} onClick={this.openLinkPeerUofTHub}>View</button>
+            </Col>
           </Row>
           <Row className="col-item course-description">
             <h3>Course Description</h3>
             <p>{this.state.course_description}</p>
+          </Row>
+          <Row className="col-item course-professor">
+            <h3>Course Professor</h3>
+            <p>{this.state.professor}</p>
+          </Row>
+          <Row className="col-item course-relatedcareers">
+            <h3>Related Careers</h3>
+            <p>{this.state.relatedcareers}</p>
           </Row>
           <Row className="col-item course-requisite">
             <Row>
@@ -157,12 +201,12 @@ class CourseDescriptionPage extends Component {
                 <p>{this.state.exclusions}</p>
               </Col>
             </Row>
-            <Row>
+            <Row> 
               <div className={"req-graph"}>
                 <img style={{width: "70%", marginBottom: "3%"}} alt="" src={requisite_label}></img>
                 <img src={`data:image/jpeg;base64,${this.state.graph}`} alt="" ></img>
-              </div>
-            </Row>
+              </div> 
+            </Row> 
           </Row>
         </Container>
       </div>
