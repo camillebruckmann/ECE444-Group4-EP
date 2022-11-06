@@ -42,12 +42,12 @@ class CourseDescriptionPage extends Component {
 
   componentDidMount() {
   // console.log("pass in course code: ", this.props.match.params.code)
-    API.get(`/course/details?code=${this.props.match.params.code}`, {
-      code: this.props.course_code
-    })
-    // axios.get(`https://assignment-1-starter-template.herokuapp.com/course/details?code=${this.props.match.params.code}`, {
-    //   code: this.props.course_code 
+    // API.get(`/course/details?code=${this.props.match.params.code}`, {
+    //   code: this.props.course_code
     // })
+    axios.get(`https://assignment-1-starter-template.herokuapp.com/course/details?code=${this.props.match.params.code}`, {
+      code: this.props.course_code 
+    })
       .then(res => {
         console.log(res.data.course)
         this.setState({course_code: res.data.course.code})
