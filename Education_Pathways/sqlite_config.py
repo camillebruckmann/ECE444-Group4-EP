@@ -86,7 +86,9 @@ def select_professors_by_course(conn, query):
     rows = cur.fetchall()
     profs = []
     for row in rows:
-        profs.append(select_professor_by_course_session_id(conn, row))
+        instructors = select_professor_by_course_session_id(conn, row[0])
+        for i in instructors:
+            profs.append(i[1])
     return profs
 
 def select_all_prerequisites_for_course(conn, query): 

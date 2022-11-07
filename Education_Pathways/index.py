@@ -150,10 +150,19 @@ def serve(path):
 
 @app.route("/<code>/prof", methods=["GET"])
 def getProfessors(code):
+    code = code.upper()
     with conn:
         query_result = select_professors_by_course(conn, code)
-    prof = ({"profs": query_result})
+    profs_list = ""
+    if (len(query_result) > 0):
+        profs_list = query_result[0]
+    if (len(query_result) > 1):
+        for result in query_result[1:]:
+            profs_list += query_result[" , " + result]
+    
+    prof = ({"profs": profs_list})
     prof = jsonify(prof)
+
     return prof
 
 if __name__ == '__main__':

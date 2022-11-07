@@ -107,13 +107,12 @@ class CourseDescriptionPage extends Component {
         //temp_graph.push(<ShowGraph graph_src={this.state.graph}></ShowGraph>)
         this.setState({graphics: temp_graph})
 
-        fetch("http://localhost:5000/"+res.data.course.code+"/prof").then(response =>
+        let full_course_code = res.data.course.code
+        let short_course_code = full_course_code.slice(0, -2)
+        fetch("http://localhost:5000/"+short_course_code+"/prof").then(response =>
           response.json().then(prof =>{
-            this.setState({professor: prof.item})
+            this.setState({professor: prof.profs})
           }));
-
-        // this.setState({professor: "res.data.course.professor"})
-
 
 
         this.setState({relatedcareers: res.data.course.relatedcareers})
