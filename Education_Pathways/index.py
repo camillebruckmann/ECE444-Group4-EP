@@ -21,6 +21,10 @@ config.init_app(app)
 config.init_db(app)
 config.init_cors(app)
 
+database = r"ep_database"
+from sqlite_config import create_connection, select_professors_by_course
+conn = create_connection(database)
+
 
 # route functions
 def search_course_by_code(s):
@@ -41,7 +45,8 @@ def search_course_by_code(s):
             'syllabus': "Course syllabus here.",
             'prereq': ['APS101H1, ECE101H1'],
             'coreq': ['APS102H1, ECE102H1'],
-            'exclusion': ['APS102H1, ECE102H1'] ,
+            'exclusion': ['APS102H1, ECE102H1'],
+            
         }
         res.append(res_d)
     return res
@@ -50,7 +55,6 @@ class SearchCourse(Resource):
     def get(self):
         input = request.args.get('input')
         courses = search_course_by_code(input)
-        # courses =[{'_id': 1, 'code': 'ECE444', 'name': 'SE'}, {'_id': 2,'code': 'ECE333', 'name': 'ur mom'}]
         if len(courses) > 0:
             try:
                 resp = jsonify(courses)
@@ -127,8 +131,8 @@ api = Api(app)
 api.add_resource(controller.UserRegistration, '/user/register')
 api.add_resource(controller.UserLogin, '/user/login')
 
-api.add_resource(controller.SearchCourse, '/searchc')
-api.add_resource(controller.ShowCourse, '/course/details')
+# api.add_resource(controller.SearchCourse, '/searchc')
+# api.add_resource(controller.ShowCourse, '/course/details')
 api.add_resource(controller.ShowCourseGraph, '/course/graph')
 
 api.add_resource(controller.UserWishlist, '/user/wishlist')
@@ -144,10 +148,18 @@ def serve(path):
     else:
         return send_from_directory(app.static_folder, 'index.html')
 
+@app.route("/<code>/prof", methods=["GET"])
+def getProfessors(code):
+    with conn:
+        query_result = select_professors_by_course(conn, code)
+    prof = ({"profs": query_result})
+    prof = jsonify(prof)
+    return prof
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=5000, extra_files=['app.py', 'controller.py', 'model.py'])
     app.run(threaded=True, port=5000)
+
     # with open("test.json") as f:
     #     data = json.load(f)
     # for i in range(75):

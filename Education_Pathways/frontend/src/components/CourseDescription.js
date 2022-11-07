@@ -49,7 +49,7 @@ class CourseDescriptionPage extends Component {
       code: this.props.course_code 
     })
       .then(res => {
-        console.log(res.data.course)
+        // console.log(res.data.course)
         this.setState({course_code: res.data.course.code})
         this.setState({course_name: res.data.course.name})
         this.setState({course_description : res.data.course.description})
@@ -107,7 +107,15 @@ class CourseDescriptionPage extends Component {
         //temp_graph.push(<ShowGraph graph_src={this.state.graph}></ShowGraph>)
         this.setState({graphics: temp_graph})
 
-        this.setState({professor: res.data.course.professor})
+        fetch("http://localhost:5000/"+res.data.course.code+"/prof").then(response =>
+          response.json().then(prof =>{
+            this.setState({professor: prof.item})
+          }));
+
+        // this.setState({professor: "res.data.course.professor"})
+
+
+
         this.setState({relatedcareers: res.data.course.relatedcareers})
 
     })

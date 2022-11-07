@@ -10,7 +10,7 @@ def create_connection(db_file):
     """
     conn = None
     try:
-        conn = sqlite3.connect(db_file)
+        conn = sqlite3.connect(db_file, check_same_thread=False)
     except Error as e:
         print(e)
 
@@ -78,6 +78,16 @@ def select_professor_by_course_session_id(conn, query):
                 instructor_sessions WHERE session_id = ?)", (query,))
     rows = cur.fetchall()
     return rows
+
+def select_professors_by_course(conn, query): 
+    cur = conn.cursor()
+    cur.execute("SELECT * from Sessions \
+                WHERE course_code = ?", (query,))
+    rows = cur.fetchall()
+    profs = []
+    for row in rows:
+        profs.append(select_professor_by_course_session_id(conn, row))
+    return profs
 
 def select_all_prerequisites_for_course(conn, query): 
     cur = conn.cursor()
