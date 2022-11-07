@@ -114,8 +114,10 @@ class CourseDescriptionPage extends Component {
             this.setState({professor: prof.profs})
           }));
 
-
-        this.setState({relatedcareers: res.data.course.relatedcareers})
+        fetch("http://localhost:5000/"+short_course_code+"/careers").then(response =>
+        response.json().then(careers =>{
+          this.setState({relatedcareers: careers.careers})
+        }));
 
     })
 

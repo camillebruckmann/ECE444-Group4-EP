@@ -22,8 +22,8 @@ config.init_db(app)
 config.init_cors(app)
 
 database = r"ep_database"
-from sqlite_config import create_connection, select_professors_by_course
-conn = create_connection(database)
+import sqlite_config
+conn = sqlite_config.create_connection(database)
 
 
 # route functions
@@ -152,7 +152,7 @@ def serve(path):
 def getProfessors(code):
     code = code.upper()
     with conn:
-        query_result = select_professors_by_course(conn, code)
+        query_result = sqlite_config.select_professors_by_course(conn, code)
     profs_list = ""
     if (len(query_result) > 0):
         profs_list = query_result[0]
@@ -164,6 +164,23 @@ def getProfessors(code):
     prof = jsonify(prof)
 
     return prof
+    
+@app.route("/<code>/careers", methods=["GET"])
+def getCareers(code):
+    code = code.upper()
+    with conn:
+        query_result = sqlite_config.select_all_keywords_for_course(conn, code)
+    careers_list = ""
+    if (len(query_result) > 0):
+        careers_list = query_result[0]
+    if (len(query_result) > 1):
+        for result in query_result[1:]:
+            careers_list += ", " + result
+    
+    careers = ({"careers": careers_list})
+    careers = jsonify(careers)
+
+    return careers
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=5000, extra_files=['app.py', 'controller.py', 'model.py'])

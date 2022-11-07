@@ -99,6 +99,19 @@ def select_all_prerequisites_for_course(conn, query):
     rows = cur.fetchall()
     return rows
 
+# In this case, keywords for a course and related careers are synonymous
+def select_all_keywords_for_course(conn, query): 
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM Keywords WHERE course_code = ?", (query,))
+    rows = cur.fetchall()
+
+    keywords = []
+    for row in rows:
+        keywords.append(row[0])
+    
+    return keywords
+
+
 def select_all_sessions(conn): 
     cur = conn.cursor()
     cur.execute("SELECT * FROM Sessions")
@@ -136,6 +149,8 @@ def main():
         print(select_all_instructors(conn))
         print('5')
         print(select_professor_by_course_session_id(conn, 1))
+        print('6')
+        select_all_keywords_for_course(conn, 'ECE444')
         #select_course_by_location(conn, 1)
 
 
