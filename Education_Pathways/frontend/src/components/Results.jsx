@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col'
 import './css/Result.css'
 import unstarred from './img/star.png'
 import starred from './img/starred.png'
+import API from '../api';
 
 let star;
 
