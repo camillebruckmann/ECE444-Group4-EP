@@ -3,7 +3,7 @@ from minor import check_course_in_minor
 from flask.testing import FlaskClient
 
 
-# Jean
+
 def test_check_course_in_minor():
     course = "MIE439H1S"
     minor = "Biomedical Engineering Minor"
@@ -11,7 +11,7 @@ def test_check_course_in_minor():
 
     assert result == minor
 
-# Cansin
+
 def test_user_register_endpoint():
     tester = app.test_client()
     response = tester.get("/user/register")
@@ -30,11 +30,26 @@ def test_search_endpoint():
 
     assert response.status_code == 200
 
-def test_course_details_endpoint():
+#Simrah 
+def test_course_details():
     tester = app.test_client()
-    response = tester.get("/course/details?code=ECE318H1")
+    response = tester.get("/courseDetails?code=ECE318H1")
 
     assert response.status_code == 200
+
+#Simrah
+def test_course_queries_reddit():
+    tester = app.test_client() 
+    response = tester.get("https://www.reddit.com/r/UofT/search/?q=ECE318&restrict_sr=1&sr_nsfw=&include_over_18=1")
+
+    assert response.status_code == 200 
+
+#Simrah 
+def test_course_queries_uofthub():
+    tester = app.test_client() 
+    response = tester.get("https://uofthub.ca/course/ECE318")
+
+    assert response.status_code == 200 
 
 def test_course_graph_endpoint():
     tester = app.test_client()
