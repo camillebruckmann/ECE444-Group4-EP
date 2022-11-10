@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import requisite_label from './img/requisite-label.png'
 import empty_star from './img/star.png'
+import API from '../api';
 import starred from './img/starred.png'
 import axios from "axios"
 
@@ -40,13 +41,15 @@ class CourseDescriptionPage extends Component {
 
 
   componentDidMount() {
-    console.log("pass in course code: ", this.props.match.params.code)
-
+  // console.log("pass in course code: ", this.props.match.params.code)
+    // API.get(`/course/details?code=${this.props.match.params.code}`, {
+    //   code: this.props.course_code
+    // })
     axios.get(`https://assignment-1-starter-template.herokuapp.com/course/details?code=${this.props.match.params.code}`, {
       code: this.props.course_code 
     })
       .then(res => {
-        console.log(res.data)
+        // console.log(res.data.course)
         this.setState({course_code: res.data.course.code})
         this.setState({course_name: res.data.course.name})
         this.setState({course_description : res.data.course.description})
@@ -104,8 +107,17 @@ class CourseDescriptionPage extends Component {
         //temp_graph.push(<ShowGraph graph_src={this.state.graph}></ShowGraph>)
         this.setState({graphics: temp_graph})
 
-        this.setState({professor: res.data.course.professor})
-        this.setState({relatedcareers: res.data.course.relatedcareers})
+        let full_course_code = res.data.course.code
+        let short_course_code = full_course_code.slice(0, -2)
+        fetch("http://localhost:5000/"+short_course_code+"/prof").then(response =>
+          response.json().then(prof =>{
+            this.setState({professor: prof.profs})
+          }));
+
+        fetch("http://localhost:5000/"+short_course_code+"/careers").then(response =>
+        response.json().then(careers =>{
+          this.setState({relatedcareers: careers.careers})
+        }));
 
     })
 
@@ -201,12 +213,12 @@ class CourseDescriptionPage extends Component {
                 <p>{this.state.exclusions}</p>
               </Col>
             </Row>
-            <Row> 
+            <Row>
               <div className={"req-graph"}>
                 <img style={{width: "70%", marginBottom: "3%"}} alt="" src={requisite_label}></img>
                 <img src={`data:image/jpeg;base64,${this.state.graph}`} alt="" ></img>
-              </div> 
-            </Row> 
+              </div>
+            </Row>
           </Row>
         </Container>
       </div>

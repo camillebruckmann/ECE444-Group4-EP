@@ -16,7 +16,7 @@ c.execute('''
           ([session_id] INTEGER PRIMARY KEY, 
           [year] INTEGER, [semester] INTEGER, 
           [section] INTEGER, 
-          [course_code] INTEGER, 
+          [course_code] TEXT, 
           [campus] INTEGER, 
           [delivery] INTEGER, git
           [synchronous] INTEGER, 
