@@ -94,35 +94,35 @@ class CourseDescriptionPage extends Component {
           this.setState({exclusions : res.data.course.exclusion})
         }
 
-        let syllabus_link = "http://courses.skule.ca/course/" + this.props.match.params.code
-        this.setState({syllabus : syllabus_link})
-
-        let uofthubpeerfeedback_link = "http://uofthub.ca/course/" + this.props.match.params.code.slice(0,6)
-        this.setState({uofthubfeedback : uofthubpeerfeedback_link})
-
-        let peerfeedback_link = "http://www.reddit.com/r/UofT/search/?q=" + this.props.match.params.code.slice(0,6) + "&restrict_sr=1&sr_nsfw=&include_over_18=1" 
-        this.setState({redditpeerfeedback : peerfeedback_link})
-
         let temp_graph = []
         //temp_graph.push(<ShowGraph graph_src={this.state.graph}></ShowGraph>)
         this.setState({graphics: temp_graph})
 
-        let full_course_code = res.data.course.code
-        let short_course_code = full_course_code.slice(0, -2)
-        fetch("http://localhost:5000/"+short_course_code+"/prof").then(response =>
-          response.json().then(prof =>{
-            this.setState({professor: prof.profs})
-          }));
-
-        fetch("http://localhost:5000/"+short_course_code+"/careers").then(response =>
-        response.json().then(careers =>{
-          this.setState({relatedcareers: careers.careers})
-        }));
-
     })
 
 
-    console.log("new state: ", this.state)
+    let syllabus_link = "http://courses.skule.ca/course/" + this.props.match.params.code
+    this.setState({syllabus : syllabus_link})
+
+    let uofthubpeerfeedback_link = "http://uofthub.ca/course/" + this.props.match.params.code.slice(0,6)
+    this.setState({uofthubfeedback : uofthubpeerfeedback_link})
+
+    let peerfeedback_link = "http://www.reddit.com/r/UofT/search/?q=" + this.props.match.params.code.slice(0,6) + "&restrict_sr=1&sr_nsfw=&include_over_18=1" 
+    this.setState({redditpeerfeedback : peerfeedback_link})
+
+
+    let full_course_code = this.props.match.params.code
+    let short_course_code = full_course_code.slice(0, -2)
+    fetch("http://localhost:5000/"+short_course_code+"/prof").then(response =>
+      response.json().then(prof =>{
+        this.setState({professor: prof.profs})
+      }));
+
+    fetch("http://localhost:5000/"+short_course_code+"/careers").then(response =>
+    response.json().then(careers =>{
+      this.setState({relatedcareers: careers.careers})
+    }));
+
   }
 
 
