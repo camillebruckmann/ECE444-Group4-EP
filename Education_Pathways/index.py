@@ -118,6 +118,18 @@ class ShowCourse(Resource):
             return resp
 
 
+def query_to_paragraph(query_result):
+    paragraph = ""
+
+    if (len(query_result) > 0):
+        paragraph = query_result[0]
+    if (len(query_result) > 1):
+        for result in query_result[1:]:
+            paragraph += ", " + result
+
+    return paragraph
+
+
 # API Endpoints
 rest_api = Api(app)
 # rest_api.add_resource(controller.SearchCourse, '/searchc')
@@ -148,18 +160,38 @@ def serve(path):
     else:
         return send_from_directory(app.static_folder, 'index.html')
 
+@app.route("/<code>/course_info", methods=["GET"])
+def getCourseInfo(code):
+    code = code.upper()
+    with conn:       
+        # name = sqlite_config.select_coursename_from_course(conn, code)
+        # desc = sqlite_config.select_description_from_course(conn, code)
+        prereq_query_result = sqlite_config.select_all_prerequisites_for_course(conn, code)
+        # coreq_query_result = sqlite_config.select_all_corequisites_for_course(conn, code)
+        # exclusions_query_result = sqlite_config.select_all_exclusions_for_course(conn, code)
+
+    prereqs_list = query_to_paragraph(prereq_query_result)
+    # coreqs_list = query_to_paragraph(coreq_query_result)
+    # exclusions_list = query_to_paragraph(exclusions_query_result)
+
+    info = ({
+            "course_code": code,
+            # {"name": name},
+            # {"description": desc},
+            "prereqs": prereqs_list,
+            # {"coreqs": coreqs_list},
+            # {"exclusions": exclusions_list}
+    })
+    info = jsonify(info)
+
+    return info
+
 @app.route("/<code>/prof", methods=["GET"])
 def getProfessors(code):
     code = code.upper()
     with conn:
         query_result = sqlite_config.select_professors_by_course(conn, code)
-    profs_list = ""
-    if (len(query_result) > 0):
-        profs_list = query_result[0]
-    if (len(query_result) > 1):
-        for result in query_result[1:]:
-            profs_list += query_result[" , " + result]
-    
+    profs_list = query_to_paragraph(query_result)
     prof = ({"profs": profs_list})
     prof = jsonify(prof)
 
@@ -170,13 +202,7 @@ def getCareers(code):
     code = code.upper()
     with conn:
         query_result = sqlite_config.select_all_keywords_for_course(conn, code)
-    careers_list = ""
-    if (len(query_result) > 0):
-        careers_list = query_result[0]
-    if (len(query_result) > 1):
-        for result in query_result[1:]:
-            careers_list += ", " + result
-    
+    careers_list = query_to_paragraph(query_result)
     careers = ({"careers": careers_list})
     careers = jsonify(careers)
 

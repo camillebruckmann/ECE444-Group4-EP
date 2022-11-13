@@ -49,57 +49,27 @@ class CourseDescriptionPage extends Component {
       code: this.props.course_code 
     })
       .then(res => {
-        // console.log(res.data.course)
-        this.setState({course_code: res.data.course.code})
-        this.setState({course_name: res.data.course.name})
-        this.setState({course_description : res.data.course.description})
+        
         this.setState({graph: res.data.course.graph})
-        let prereq_len = res.data.course.prereq.length
-        if (prereq_len > 1) {
-          let prereq_str = ""
-          for (let i = 0; i < prereq_len; i++) {
-            prereq_str += res.data.course.prereq[i]
-            if (i !== prereq_len - 1) {
-              prereq_str += ", "
-            }
-          }
-          this.setState({prerequisites : prereq_str})
-        } else {
-          this.setState({prerequisites : res.data.course.prereq})
-        }
-        let coreq_len = res.data.course.coreq.length
-        if (coreq_len > 1) {
-          let coreq_str = ""
-          for (let i = 0; i < coreq_str; i++) {
-            coreq_str += res.data.course.coreq[i]
-            if (i !== coreq_len - 1) {
-              coreq_str += ", "
-            }
-          }
-          this.setState({corequisites : coreq_str})
-        } else {
-          this.setState({corequisites : res.data.course.coreq})
-        }
-        let exclusion_len = res.data.course.exclusion.length
-        if (exclusion_len > 1) {
-          let exclusion_str = ""
-          for (let i = 0; i < exclusion_str; i++) {
-            exclusion_str += res.data.course.exclusion[i]
-            if (i !== exclusion_len - 1) {
-              exclusion_str += ", "
-            }
-          }
-          this.setState({exclusions : exclusion_str})
-        } else {
-          this.setState({exclusions : res.data.course.exclusion})
-        }
-
+        
         let temp_graph = []
         //temp_graph.push(<ShowGraph graph_src={this.state.graph}></ShowGraph>)
         this.setState({graphics: temp_graph})
 
     })
 
+    let full_course_code = this.props.match.params.code
+    let short_course_code = full_course_code.slice(0, -2)
+
+    fetch("http://localhost:5000/"+short_course_code+"/course_info").then(response =>
+      response.json().then(info =>{
+        this.setState({course_code: info.course_code})
+        this.setState({course_name: info.name})
+        this.setState({course_description: info.description})
+        this.setState({prerequisites: info.prereqs})
+        this.setState({corequisites: info.coreqs})
+        this.setState({exclusions: info.exclusions})
+      }));
 
     let syllabus_link = "http://courses.skule.ca/course/" + this.props.match.params.code
     this.setState({syllabus : syllabus_link})
@@ -110,9 +80,6 @@ class CourseDescriptionPage extends Component {
     let peerfeedback_link = "http://www.reddit.com/r/UofT/search/?q=" + this.props.match.params.code.slice(0,6) + "&restrict_sr=1&sr_nsfw=&include_over_18=1" 
     this.setState({redditpeerfeedback : peerfeedback_link})
 
-
-    let full_course_code = this.props.match.params.code
-    let short_course_code = full_course_code.slice(0, -2)
     fetch("http://localhost:5000/"+short_course_code+"/prof").then(response =>
       response.json().then(prof =>{
         this.setState({professor: prof.profs})
