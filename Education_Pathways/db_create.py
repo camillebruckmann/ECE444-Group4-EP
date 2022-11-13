@@ -32,6 +32,13 @@ c.execute('''
            )
           ''')
 
+c.execute('''
+          CREATE TABLE IF NOT EXISTS Careers
+          ([career] TEXT,
+           [course_code] TEXT, 
+           PRIMARY KEY(career, course_code)
+           )
+          ''')
 
 c.execute('''
           CREATE TABLE IF NOT EXISTS Instructors
@@ -73,6 +80,22 @@ c.execute('''
           CREATE TABLE IF NOT EXISTS Prerequisites
           ([course_code] TEXT PRIMARY KEY,
            [prerequisite_course_code] TEXT
+           )
+          ''')
+
+c.execute('''
+          CREATE TABLE IF NOT EXISTS Corequisites
+          ([course_code] TEXT PRIMARY KEY,
+           [corequisite_course_code] TEXT,
+           FOREIGN KEY(corequisite_course_code) REFERENCES Courses(course_code)
+           )
+          ''')
+    
+c.execute('''
+          CREATE TABLE IF NOT EXISTS Exclusions
+          ([course_code] TEXT PRIMARY KEY,
+           [exclusion_course_code] TEXT,
+           FOREIGN KEY(exclusion_course_code) REFERENCES Courses(course_code)
            )
           ''')
 
