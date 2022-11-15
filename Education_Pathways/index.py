@@ -123,6 +123,7 @@ class SearchCourse(Resource):
         filters["Division"] = []
         input = request.args.get('input')
         create_filter(request)
+        print(filters)
         courses = search_n_filter(input,filters)
 
         if len(courses) > 0:

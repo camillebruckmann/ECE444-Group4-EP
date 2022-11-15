@@ -30,7 +30,7 @@ class SearchResultDisplay extends Component{
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleSubmit2 = this.handleSubmit2.bind(this);
+    this.handleFilter = this.handleFilter.bind(this);
   }
 
   handleChange(event) {
@@ -56,7 +56,7 @@ class SearchResultDisplay extends Component{
         arts: "",
         architecture: ""
     }
-    console.log(event)
+    console.log("HEREEEEE")
     for (let i = 0; i < event.length; i++){
       if (event[i].cat == 'Session'){
         if (event[i].key == 'Fall'){
@@ -85,6 +85,7 @@ class SearchResultDisplay extends Component{
           temp_filters.architecture = 'John H. Daniels Faculty of Architecture, Landscape, & Design'
         }
     }}
+    console.log("HERERERE")
     console.log(temp_filters)
     this.setState({filters: temp_filters});
     if (this.state.input.trim() != ""){
@@ -94,6 +95,7 @@ class SearchResultDisplay extends Component{
   }
 
   getData = (input, fall, winter, summer, stgeorge, mississauga, scarborough, music, eng, arts, architecture) => {
+    console.log(winter)
     API.get(`/searchc?input=${input}`, {params: {fall: fall, winter: winter, summer: summer, stgeorge: stgeorge, mississauga: mississauga, scarborough: scarborough, music: music, eng:eng, arts:arts, architecture: architecture}})
     // axios.get(`https://assignment-1-starter-template.herokuapp.com/searchc?input=${input}`)
       .then(res => {
@@ -175,9 +177,9 @@ We are looking for feedback to improve Education Pathways and make it more usefu
                   displayValue="key"
                   groupBy="cat"
                   onKeyPressFn={(event)=>{console.log(event)}}
-                  onRemove={(event)=>{console.log(event)}}
+                  onRemove={this.handleFilter}
                   onSearch={(event)=>{console.log(event)}}
-                  onSelect={(event)=>{console.log(event)}}
+                  onSelect={this.handleFilter}
                   placeholder="Click to add filters"
                   hidePlaceholder = 'true'
                   style={{
