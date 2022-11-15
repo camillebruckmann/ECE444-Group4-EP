@@ -61,7 +61,7 @@ class CourseDescriptionPage extends Component {
     let full_course_code = this.props.match.params.code
     let short_course_code = full_course_code.slice(0, -2)
 
-    fetch("http://localhost:5000/"+short_course_code+"/course_info").then(response =>
+    fetch("https://ep4sight.herokuapp.com/"+short_course_code+"/course_info").then(response =>
       response.json().then(info =>{
         this.setState({course_code: info.course_code})
         this.setState({course_name: info.name})
@@ -81,12 +81,12 @@ class CourseDescriptionPage extends Component {
     let peerfeedback_link = "http://www.reddit.com/r/UofT/search/?q=" + this.props.match.params.code.slice(0,6) + "&restrict_sr=1&sr_nsfw=&include_over_18=1" 
     this.setState({redditpeerfeedback : peerfeedback_link})
 
-    fetch("http://localhost:5000/"+short_course_code+"/prof").then(response =>
+    fetch("https://ep4sight.herokuapp.com/"+short_course_code+"/prof").then(response =>
       response.json().then(prof =>{
         this.setState({professor: prof.profs})
       }));
 
-    fetch("http://localhost:5000/"+short_course_code+"/careers").then(response =>
+    fetch("https://ep4sight.herokuapp.com/"+short_course_code+"/careers").then(response =>
     response.json().then(careers =>{
       this.setState({relatedcareers: careers.careers})
     }));
