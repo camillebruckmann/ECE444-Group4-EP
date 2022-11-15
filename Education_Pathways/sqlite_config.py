@@ -30,6 +30,40 @@ def select_all_courses(conn):
 
     return rows
 
+def select_course(conn, query):
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM Courses WHERE course_code = ?", (query,))
+    rows = cur.fetchall()
+    rows.append(select_all_prerequisites_for_course(conn, query))
+    rows.append(select_all_corequisites_for_course(conn, query))
+    rows.append(select_all_exclusions_for_course(conn, query))
+
+    if not rows: 
+        return("No results")
+
+    return rows
+
+def select_coursename_for_course(conn, query):
+    cur = conn.cursor()
+    cur.execute("SELECT Courses.course_name FROM Courses WHERE course_code = ?", (query,))
+    rows = cur.fetchall()
+
+    if not rows: 
+        return("No results")
+
+    return rows
+
+def select_description_for_course(conn, query):
+    cur = conn.cursor()
+    cur.execute("SELECT Courses.course_description FROM Courses WHERE course_code = ?", (query,))
+    rows = cur.fetchall()
+
+    if not rows: 
+        return("No results")
+
+    return rows
+
+
 def select_course_by_faculty(conn, query): 
     cur = conn.cursor()
     cur.execute("SELECT * FROM Courses WHERE faculty = ?", (query,))
@@ -94,9 +128,40 @@ def select_all_prerequisites_for_course(conn, query):
     cur = conn.cursor()
     cur.execute("SELECT * from Courses \
                 WHERE course_code = (SELECT prerequisite_course_code FROM \
-                prerequisites WHERE course_code = ?)", (query,))
+                Prerequisites WHERE course_code = ?)", (query,))
     rows = cur.fetchall()
-    return rows
+    list = []
+    if (len(rows) > 0) :
+        for course in rows:
+            if (len(course) > 0):
+                list.append(course[0])
+    return list
+
+def select_all_corequisites_for_course(conn, query): 
+    cur = conn.cursor()
+    cur.execute("SELECT * from Courses \
+                WHERE course_code = (SELECT corequisite_course_code FROM \
+                Corequisites WHERE course_code = ?)", (query,))
+    rows = cur.fetchall()
+    list = []
+    if (len(rows) > 0) :
+        for course in rows:
+            if (len(course) > 0):
+                list.append(course[0])
+    return list
+
+def select_all_exclusions_for_course(conn, query): 
+    cur = conn.cursor()
+    cur.execute("SELECT * from Courses \
+                WHERE course_code = (SELECT exclusion_course_code FROM \
+                Exclusions WHERE course_code = ?)", (query,))
+    rows = cur.fetchall()
+    list = []
+    if (len(rows) > 0) :
+        for course in rows:
+            if (len(course) > 0):
+                list.append(course[0])
+    return list
 
 # In this case, keywords for a course and related careers are synonymous
 def select_all_keywords_for_course(conn, query): 
@@ -138,15 +203,18 @@ def main():
     with conn:
         print("1. Query all courses")
         print(select_all_keywords_for_course(conn, 'ECE444'))
-        #print("2. Test")
+        print("2. Test")
         print('2')
         print(select_all_sessions(conn))
         print('4')
         print(select_all_instructors(conn))
-        # print('5')
-        # print(select_professor_by_course_session_id(conn, 1))
-        # print('6')
-        #select_course_by_location(conn, 1)
+        print('5')
+        print(select_all_courses(conn))
+        print(select_professor_by_course_session_id(conn, 1))
+        print('6')
+        select_course_by_location(conn, 1)
+        # print(select_course(conn, 'ECE444'))
+        # print(select_description_for_course(conn, 'ECE444')[0][0])
 
 
 if __name__ == '__main__':
