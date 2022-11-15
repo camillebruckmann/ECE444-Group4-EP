@@ -189,7 +189,7 @@ class CourseDescriptionPage extends Component {
             </Row>
           </Row>
           <Row className="col-item course-keywords">
-            <h3>Take this Course if You Like</h3>
+            <h3>Take this Course if You're Interested In:</h3>
             <p>{this.state.keywords}</p>
           </Row>
         </Container>
