@@ -44,7 +44,7 @@ def search_course_by_code(s):
             'code': d['Code'],
             'name': d['Name'],
             'description': d['Course Description'],
-            'prereq': ['Pre-requisites'],
+            'prereq': d['Pre-requisites'],
             'coreq': ['APS102H1, ECE102H1'],
             'exclusion': ['APS102H1, ECE102H1'],
             'division': d['Division'],
