@@ -42,8 +42,9 @@ class SearchResultDisplay extends Component{
         // console.log(`it is ${res.status}`)
         if (res.status === 200) {
           this.setState({results: []})
-          console.log(res.data.length)
-          if (res.data.length > 0) {
+          console.log("It is: ", res)
+          // console.log(res.data.length)
+          if (res.data != null) {
             let len = res.data.length
             let result_temp = []
             result_temp.push(<Label></Label>)
@@ -53,7 +54,7 @@ class SearchResultDisplay extends Component{
             this.setState({results: result_temp})
           } 
           else
-            if (res.data.length === 0) {
+            if (res.data == null) {
               alert("Course not found")
             }
             else {
