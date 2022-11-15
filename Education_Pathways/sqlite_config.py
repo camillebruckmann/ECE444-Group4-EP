@@ -163,7 +163,6 @@ def select_all_exclusions_for_course(conn, query):
                 list.append(course[0])
     return list
 
-# In this case, keywords for a course and related careers are synonymous
 def select_all_keywords_for_course(conn, query): 
     cur = conn.cursor()
     cur.execute("SELECT * FROM Keywords WHERE course_code = ?", (query,))
@@ -175,6 +174,30 @@ def select_all_keywords_for_course(conn, query):
     
     return keywords
 
+def select_all_careers(conn):
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM Careers")
+    rows = cur.fetchall()
+
+    return rows
+
+def select_all_keywords(conn):
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM Keywords")
+    rows = cur.fetchall()
+    
+    return rows
+
+def select_all_careers_for_course(conn, query): 
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM Careers WHERE course_code = ?", (query,))
+    rows = cur.fetchall()
+
+    careers = []
+    for row in rows:
+        careers.append(row[0])
+    
+    return careers
 
 def select_all_sessions(conn): 
     cur = conn.cursor()
@@ -213,8 +236,6 @@ def main():
         print(select_professor_by_course_session_id(conn, 1))
         print('6')
         select_course_by_location(conn, 1)
-        # print(select_course(conn, 'ECE444'))
-        # print(select_description_for_course(conn, 'ECE444')[0][0])
 
 
 if __name__ == '__main__':

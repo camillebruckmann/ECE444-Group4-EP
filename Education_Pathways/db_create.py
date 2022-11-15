@@ -27,7 +27,7 @@ c.execute('''
 
 c.execute('''
           CREATE TABLE IF NOT EXISTS Keywords
-          ([keyword] INTEGER,
+          ([keyword] TEXT,
            [course_code] TEXT, 
            PRIMARY KEY(keyword, course_code)
            )
