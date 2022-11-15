@@ -1,7 +1,6 @@
 import sqlite3
 from sqlite3 import Error, connect
 
-
 def create_connection(db_file):
     """ create a database connection to the SQLite database
         specified by the db_file
@@ -138,19 +137,15 @@ def main():
     conn = create_connection(database)
     with conn:
         print("1. Query all courses")
-        print(conn)
-        print(select_all_courses(conn))
+        print(select_all_keywords_for_course(conn, 'ECE444'))
         #print("2. Test")
         print('2')
         print(select_all_sessions(conn))
-        print('3')
-        print(select_all_instructor_sessions(conn))
         print('4')
         print(select_all_instructors(conn))
-        print('5')
-        print(select_professor_by_course_session_id(conn, 1))
-        print('6')
-        select_all_keywords_for_course(conn, 'ECE444')
+        # print('5')
+        # print(select_professor_by_course_session_id(conn, 1))
+        # print('6')
         #select_course_by_location(conn, 1)
 
 
