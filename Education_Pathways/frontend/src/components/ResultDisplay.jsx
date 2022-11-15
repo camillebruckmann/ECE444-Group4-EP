@@ -56,7 +56,6 @@ class SearchResultDisplay extends Component{
         arts: "",
         architecture: ""
     }
-    console.log("HEREEEEE")
     for (let i = 0; i < event.length; i++){
       if (event[i].cat == 'Session'){
         if (event[i].key == 'Fall'){
@@ -108,8 +107,9 @@ class SearchResultDisplay extends Component{
             let len = res.data.length
             let result_temp = []
             result_temp.push(<Label></Label>)
+            console.log(res.data)
             for (let i = 0; i < len; i++) {
-                result_temp.push(<Result key={res.data[i]._id} course_code={res.data[i].code} course_name={res.data[i].name}></Result>)
+                result_temp.push(<Result key={res.data[i]._id} course_code={res.data[i].code} course_name={res.data[i].name} faculty={res.data[i].division} division={res.data[i].department}></Result>)
             }
             this.setState({results: result_temp})
           } 
@@ -120,7 +120,7 @@ class SearchResultDisplay extends Component{
             else {
               let result_temp = []
               result_temp.push(<Label></Label>)
-              result_temp.push(<Result key={res.data.course._id} course_code={res.data.course.code} course_name={res.data.course.name}></Result>)
+              result_temp.push(<Result key={res.data.course._id} course_code={res.data.course.code} course_name={res.data.course.name} faculty={res.data.course.division} division={res.data.course.department}></Result>)
               this.setState({results: result_temp})
             }
         } else if (res.status === 400) {

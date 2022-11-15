@@ -43,12 +43,12 @@ def search_course_by_code(s):
             '_id': i,
             'code': d['Code'],
             'name': d['Name'],
-            'description': "The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.",
-            'syllabus': "Course syllabus here.",
+            'description': d['Course Description'],
             'prereq': ['APS101H1, ECE101H1'],
             'coreq': ['APS102H1, ECE102H1'],
             'exclusion': ['APS102H1, ECE102H1'],
-            
+            'division': d['Division'],
+            'department': d['Department']
         }
         res.append(res_d)
     return res
@@ -72,12 +72,12 @@ def search_n_filter(s, filters):
             '_id': i,
             'code': d['Code'],
             'name': d['Name'],
-            'description': "The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.",
-            'syllabus': "Course syllabus here.",
+            'description': d['Course Description'],
             'prereq': ['APS101H1, ECE101H1'],
             'coreq': ['APS102H1, ECE102H1'],
             'exclusion': ['APS102H1, ECE102H1'],
-            
+            'division': d['Division'],
+            'department': d['Department']
         }
         res.append(res_d)
     return res
