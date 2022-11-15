@@ -46,7 +46,7 @@ def search_course_by_code(s):
             'description': d['Course Description'],
             'prereq': d['Pre-requisites'].strip('][').replace("'", ''),
             'coreq': d['Corequisite'].strip('][').replace("'", ''),
-            'exclusion': ['Exclusion'].strip('][').replace("'", ''),
+            'exclusion': d['Exclusion'].strip('][').replace("'", ''),
             'division': d['Division'],
             'department': d['Department']
         }
@@ -75,7 +75,7 @@ def search_n_filter(s, filters):
             'description': d['Course Description'],
             'prereq': d['Pre-requisites'].strip('][').replace("'", ''),
             'coreq': d['Corequisite'].strip('][').replace("'", ''),
-            'exclusion': ['Exclusion'].strip('][').replace("'", ''),
+            'exclusion': d['Exclusion'].strip('][').replace("'", ''),
             'division': d['Division'],
             'department': d['Department']
         }
