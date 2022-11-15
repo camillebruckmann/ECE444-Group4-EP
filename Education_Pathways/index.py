@@ -51,54 +51,10 @@ def search_course_by_code(s):
         res.append(res_d)
     return res
 
-def search_course_by_code_and_filter(s, filters):
-    # return all the courses whose course code contains the str s
-
-    refined_df = df[df['Code'].str.contains(s.upper())]
-    for type, items in filters.items():
-        if (len(items) == 0):
-            continue
-        for item in items:
-            if (type == "Term"):
-                if ("Fall" in item):
-                    item = "Fall"
-                elif ("Winter" in item):
-                    item = "Winter"
-                elif ("Summer" in item):
-                    item = "Summer"
-                else:
-                    break        
-            refined_df = refined_df[refined_df[type].str.contains(item)]
-    refined_df = refined_df.index.to_list()
-    if len(refined_df) == 0:
-        return []
-    if len(refined_df) > 10:
-        refined_df = refined_df[:10]
-    res = []
-    for i, refined_df in enumerate(refined_df):
-        d = df.iloc[refined_df].to_dict()
-        res_d = {
-            '_id': i,
-            'code': d['Code'],
-            'name': d['Name'],
-            'description': "The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.",
-            'syllabus': "Course syllabus here.",
-            'prereq': ['APS101H1, ECE101H1'],
-            'coreq': ['APS102H1, ECE102H1'],
-            'exclusion': ['APS102H1, ECE102H1'],
-            
-        }
-        res.append(res_d)
-    return res
-
 class SearchCourse(Resource):
     def get(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('input', required=True)
-        parser.add_argument('terms',location="form")
         input = request.args.get('input')
-        terms = request.form.get('terms')
-        courses = search_course_by_code('his')
+        courses = search_course_by_code(input)
         if len(courses) > 0:
             try:
                 resp = jsonify(courses)
@@ -112,16 +68,9 @@ class SearchCourse(Resource):
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('input', required=True)
-        parser.add_argument('terms', type=list, location='json', required=True)
-        parser.add_argument('locations', type=list, location='json', required=True)
         data = parser.parse_args()
         input = data['input']
-        key_mapper = {'Term':'terms','Campus':'locations'}
-        filter_types = ['Term','Campus']
-        filters = {}
-        for ft in filter_types:
-            filters[ft] = data[key_mapper[ft]]
-        courses = search_course_by_code_and_filter(input, filters)
+        courses = search_course_by_code(input)
         if len(courses) > 0:
             try:
                 resp = jsonify(courses)
@@ -198,10 +147,10 @@ api.add_resource(controller.UserLogin, '/user/login')
 # api.add_resource(controller.ShowCourse, '/course/details')
 api.add_resource(controller.ShowCourseGraph, '/course/graph')
 
-#api.add_resource(controller.UserWishlist, '/user/wishlist')
-#api.add_resource(controller.UserWishlistAdd, '/user/wishlist/addCourse')
-#api.add_resource(controller.UserWishlistRemove, '/user/wishlist/removeCourse')
-#api.add_resource(controller.UserWishlistMinorCheck, '/user/wishlist/minorCheck')
+api.add_resource(controller.UserWishlist, '/user/wishlist')
+api.add_resource(controller.UserWishlistAdd, '/user/wishlist/addCourse')
+api.add_resource(controller.UserWishlistRemove, '/user/wishlist/removeCourse')
+api.add_resource(controller.UserWishlistMinorCheck, '/user/wishlist/minorCheck')
 
 @app.route("/", defaults={'path': ''})
 @app.route('/<path:path>')

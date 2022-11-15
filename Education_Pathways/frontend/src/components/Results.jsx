@@ -29,6 +29,23 @@ class Result extends Component{
     this.props.history.push(`/course/details/${this.props.course_code}`, {course_code: this.props.course_code})
   }
   
+  componentDidMount() {
+    axios.get(`https://assignment-1-starter-template.herokuapp.com/user/wishlist?username=${this.state.username}`)
+    .then(res => {
+      let len = res.data.wishlist.course.length
+      for (let i = 0; i < len; i++) {
+        if (res.data.wishlist.course[i].code === this.state.course_code) {
+          star = starred
+          this.setState({starred: true})
+        }
+      }
+    })
+  }
+
+
+
+
+
   render(){
     return (
       <Container>
