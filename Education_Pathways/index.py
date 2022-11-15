@@ -37,6 +37,7 @@ def search_course_by_code(s):
     if len(course_ids) > 10:
         course_ids = course_ids[:10]
     res = []
+    pre_req_processed = d['Pre-requisites'].strip('][').split(', ')
     for i, course_id in enumerate(course_ids):
         d = df.iloc[course_id].to_dict()
         res_d = {
@@ -44,7 +45,7 @@ def search_course_by_code(s):
             'code': d['Code'],
             'name': d['Name'],
             'description': d['Course Description'],
-            'prereq': d['Pre-requisites'],
+            'prereq': pre_req_processed,
             'coreq': ['APS102H1, ECE102H1'],
             'exclusion': ['APS102H1, ECE102H1'],
             'division': d['Division'],
@@ -68,12 +69,13 @@ def search_n_filter(s, filters):
     res = []
     for i, course_id in enumerate(course_ids):
         d = df.iloc[course_id].to_dict()
+        pre_req_processed = d['Pre-requisites'].strip('][').split(', ')
         res_d = {
             '_id': i,
             'code': d['Code'],
             'name': d['Name'],
             'description': d['Course Description'],
-            'prereq': d['Pre-requisites'],
+            'prereq': pre_req_processed,
             'coreq': ['APS102H1, ECE102H1'],
             'exclusion': ['APS102H1, ECE102H1'],
             'division': d['Division'],
