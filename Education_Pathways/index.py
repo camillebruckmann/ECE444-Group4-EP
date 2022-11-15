@@ -73,7 +73,7 @@ def search_n_filter(s, filters):
             'code': d['Code'],
             'name': d['Name'],
             'description': d['Course Description'],
-            'prereq': ['APS101H1, ECE101H1'],
+            'prereq': d['Pre-requisites'],
             'coreq': ['APS102H1, ECE102H1'],
             'exclusion': ['APS102H1, ECE102H1'],
             'division': d['Division'],
