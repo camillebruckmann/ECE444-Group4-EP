@@ -17,8 +17,8 @@ class Result extends Component{
     this.state = {
       course_code : this.props.course_code,
       course_name: this.props.course_name,
-      division: "Division of Computer Engineering",
-      faculty: "Faculty of Applied Science and Engineering",
+      division: this.props.division,
+      faculty: this.props.faculty,
       starred: false,
       username: localStorage.getItem('username')
     };

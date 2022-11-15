@@ -45,16 +45,22 @@ class CourseDescriptionPage extends Component {
     // API.get(`/course/details?code=${this.props.match.params.code}`, {
     //   code: this.props.course_code
     // })
-    axios.get(`https://assignment-1-starter-template.herokuapp.com/course/details?code=${this.props.match.params.code}`, {
+    axios.get(`https://ep4sight.herokuapp.com/course/details?code=${this.props.match.params.code}`, {
       code: this.props.course_code 
     })
       .then(res => {
+        console.log(res)
+        this.setState({course_code: res.data.course.code})
+        this.setState({course_name: res.data.course.name})
+        this.setState({division: res.data.course.division})
+        this.setState({department: res.data.course.department})
+        this.setState({course_description: res.data.course.description})
+        this.setState({prerequisites: res.data.course.prereq})
+        this.setState({corequisites: res.data.course.coreq})
+        this.setState({exclusions: res.data.course.exclusion})
         
-        this.setState({graph: res.data.course.graph})
-        
-        let temp_graph = []
-        //temp_graph.push(<ShowGraph graph_src={this.state.graph}></ShowGraph>)
-        this.setState({graphics: temp_graph})
+        console.log(this.state.course_description)
+        this.render()
 
     })
 
@@ -64,12 +70,6 @@ class CourseDescriptionPage extends Component {
     fetch("https://ep4sight.herokuapp.com/"+short_course_code+"/course_info").then(response =>
       response.json().then(info =>{
         this.setState({course_code: info.course_code})
-        this.setState({course_name: info.name})
-        this.setState({course_description: info.description})
-        this.setState({keywords: info.keywords})
-        this.setState({prerequisites: info.prereqs})
-        this.setState({corequisites: info.coreqs})
-        this.setState({exclusions: info.exclusions})
       }));
 
     let syllabus_link = "http://courses.skule.ca/course/" + this.props.match.params.code
