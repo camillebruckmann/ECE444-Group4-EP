@@ -39,7 +39,7 @@ def search_course_by_code(s):
     res = []
     for i, course_id in enumerate(course_ids):
         d = df.iloc[course_id].to_dict()
-        pre_req_processed = d['Pre-requisites'].strip('][')
+        pre_req_processed = d['Pre-requisites'].strip('][').replace('"', '')
         res_d = {
             '_id': i,
             'code': d['Code'],
@@ -69,7 +69,7 @@ def search_n_filter(s, filters):
     res = []
     for i, course_id in enumerate(course_ids):
         d = df.iloc[course_id].to_dict()
-        pre_req_processed = d['Pre-requisites'].strip('][')
+        pre_req_processed = d['Pre-requisites'].strip('][').replace('"', '')
         res_d = {
             '_id': i,
             'code': d['Code'],
