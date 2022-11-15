@@ -37,7 +37,6 @@ def search_course_by_code(s):
     if len(course_ids) > 10:
         course_ids = course_ids[:10]
     res = []
-    pre_req_processed = d['Pre-requisites']
     for i, course_id in enumerate(course_ids):
         d = df.iloc[course_id].to_dict()
         res_d = {
@@ -69,7 +68,6 @@ def search_n_filter(s, filters):
     res = []
     for i, course_id in enumerate(course_ids):
         d = df.iloc[course_id].to_dict()
-        pre_req_processed = d['Pre-requisites']
         res_d = {
             '_id': i,
             'code': d['Code'],
