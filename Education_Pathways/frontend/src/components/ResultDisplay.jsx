@@ -21,12 +21,16 @@ class SearchResultDisplay extends Component{
         summer: "",
         stgeorge: "",
         mississauga: "",
-        scarborough: ""
+        scarborough: "",
+        music: "",
+        eng: "",
+        arts: "",
+        architecture: ""
       }
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleSubmit2 = this.handleSubmit2.bind(this);
+    this.handleFilter = this.handleFilter.bind(this);
   }
 
   handleChange(event) {
@@ -36,7 +40,7 @@ class SearchResultDisplay extends Component{
   handleSubmit(event) {
     event.preventDefault();
     console.log("HERE")
-    this.getData(this.state.input, this.state.filters.fall, this.state.filters.winter, this.state.filters.summer, this.state.filters.stgeorge, this.state.filters.mississauga, this.state.filters.scarborough)
+    this.getData(this.state.input, this.state.filters.fall, this.state.filters.winter, this.state.filters.summer, this.state.filters.stgeorge, this.state.filters.mississauga, this.state.filters.scarborough, this.state.filters.music, this.state.filters.eng, this.state.filters.arts, this.state.filters.architecture)
   }
 
   handleFilter(event) {
@@ -46,9 +50,13 @@ class SearchResultDisplay extends Component{
         summer: "",
         stgeorge: "",
         mississauga: "",
-        scarborough: ""
+        scarborough: "",
+        music: "",
+        eng: "",
+        arts: "",
+        architecture: ""
     }
-    console.log(event)
+    console.log("HEREEEEE")
     for (let i = 0; i < event.length; i++){
       if (event[i].cat == 'Session'){
         if (event[i].key == 'Fall'){
@@ -59,7 +67,6 @@ class SearchResultDisplay extends Component{
           temp_filters.summer = event[i].key
         }    
       }else if (event[i].cat == 'Campus'){
-        temp_filters.location = event[i].key
         if (event[i].key == 'St. George'){
           temp_filters.stgeorge = event[i].key
         }else if (event[i].key == 'Mississauga'){
@@ -67,18 +74,29 @@ class SearchResultDisplay extends Component{
         } else{
           temp_filters.scarborough = event[i].key
         }
-      }
-    }
+      }else if (event[i].cat == 'Division'){
+        if (event[i].key == 'Music'){
+          temp_filters.music = 'Faculty of Music'
+        }else if (event[i].key == 'Applied Science & Engineering'){
+          temp_filters.eng = 'Faculty of Applied Science & Engineering'
+        } else if (event[i].key == 'Arts and Science'){
+          temp_filters.arts = 'Faculty of Arts and Science'
+        } else{
+          temp_filters.architecture = 'John H. Daniels Faculty of Architecture, Landscape, & Design'
+        }
+    }}
+    console.log("HERERERE")
     console.log(temp_filters)
     this.setState({filters: temp_filters});
     if (this.state.input.trim() != ""){
-      this.getData(this.state.input, temp_filters.fall, temp_filters.winter, temp_filters.summer, temp_filters.stgeorge, temp_filters.mississauga, temp_filters.scarborough)
+      this.getData(this.state.input, temp_filters.fall, temp_filters.winter, temp_filters.summer, temp_filters.stgeorge, temp_filters.mississauga, temp_filters.scarborough,temp_filters.music, temp_filters.eng, temp_filters.arts, temp_filters.architecture)
     }
     
   }
 
-  getData = (input, fall, winter, summer, stgeorge, mississauga, scarborough) => {
-    API.get(`/searchc?input=${input}`, {params: {fall: fall, winter: winter, summer: summer, stgeorge: stgeorge, mississauga: mississauga, scarborough: scarborough}})
+  getData = (input, fall, winter, summer, stgeorge, mississauga, scarborough, music, eng, arts, architecture) => {
+    console.log(winter)
+    API.get(`/searchc?input=${input}`, {params: {fall: fall, winter: winter, summer: summer, stgeorge: stgeorge, mississauga: mississauga, scarborough: scarborough, music: music, eng:eng, arts:arts, architecture: architecture}})
     // axios.get(`https://assignment-1-starter-template.herokuapp.com/searchc?input=${input}`)
       .then(res => {
         // console.log(`it is ${res.status}`)
@@ -159,9 +177,9 @@ We are looking for feedback to improve Education Pathways and make it more usefu
                   displayValue="key"
                   groupBy="cat"
                   onKeyPressFn={(event)=>{console.log(event)}}
-                  onRemove={(event)=>{console.log(event)}}
+                  onRemove={this.handleFilter}
                   onSearch={(event)=>{console.log(event)}}
-                  onSelect={(event)=>{console.log(event)}}
+                  onSelect={this.handleFilter}
                   placeholder="Click to add filters"
                   hidePlaceholder = 'true'
                   style={{
@@ -210,9 +228,22 @@ We are looking for feedback to improve Education Pathways and make it more usefu
                       key: 'Scarborough'
                     },
                     {
-                      cat: 'Group 2',
-                      key: 'Option 7'
+                      cat: 'Division',
+                      key: 'Music'
+                    },
+                    {
+                      cat: 'Division',                     
+                      key: 'Applied Science & Engineering'
+                    },
+                    {
+                      cat: 'Division',
+                      key: 'Arts and Science'
+                    },
+                    {
+                      cat: 'Division',
+                      key: 'Architecture, Landscape, & Design'
                     }
+                    
                   ]}
                   
                   /> 
@@ -229,9 +260,6 @@ We are looking for feedback to improve Education Pathways and make it more usefu
       </div>
     );
   }
-
-
-  
 }
 
 export default SearchResultDisplay;
