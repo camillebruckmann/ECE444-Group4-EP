@@ -7,7 +7,8 @@ c.execute('''
           CREATE TABLE IF NOT EXISTS Courses
           ([course_code] TEXT PRIMARY KEY,
            [course_name] TEXT, 
-           [faculty] TEXT CHECK ( faculty IN ('Engineering', 'Arts & Science'))
+           [faculty] TEXT CHECK ( faculty IN ('Engineering', 'Arts & Science')),
+           [course_description] TEXT
            )
           ''')
 
@@ -26,7 +27,7 @@ c.execute('''
 
 c.execute('''
           CREATE TABLE IF NOT EXISTS Keywords
-          ([keyword] INTEGER,
+          ([keyword] TEXT,
            [course_code] TEXT, 
            PRIMARY KEY(keyword, course_code)
            )
