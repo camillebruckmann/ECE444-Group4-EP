@@ -51,6 +51,7 @@ def search_course_by_code(s):
         }
         res.append(res_d)
     return res
+
 def search_n_filter(s, filters):
     course_id = df[df['Code'].str.contains(s.upper())]
     for key,values in filters.items():
@@ -110,6 +111,7 @@ class SearchCourse(Resource):
         create_filter(request)
         print(filters)
         courses = search_n_filter(input,filters)
+
         if len(courses) > 0:
             try:
                 resp = jsonify(courses)
@@ -223,23 +225,28 @@ def serve(path):
 def getCourseInfo(code):
     code = code.upper()
     with conn:       
-        # name = sqlite_config.select_coursename_from_course(conn, code)
-        # desc = sqlite_config.select_description_from_course(conn, code)
+        name = sqlite_config.select_coursename_for_course(conn, code)
+        desc = sqlite_config.select_description_for_course(conn, code)
+        keywords = sqlite_config.select_all_keywords_for_course(conn, code)
         prereq_query_result = sqlite_config.select_all_prerequisites_for_course(conn, code)
-        # coreq_query_result = sqlite_config.select_all_corequisites_for_course(conn, code)
-        # exclusions_query_result = sqlite_config.select_all_exclusions_for_course(conn, code)
+        coreq_query_result = sqlite_config.select_all_corequisites_for_course(conn, code)
+        exclusions_query_result = sqlite_config.select_all_exclusions_for_course(conn, code)
 
+    name = name[0]
+    desc = desc[0][0]
+    keywords = query_to_paragraph(keywords)
     prereqs_list = query_to_paragraph(prereq_query_result)
-    # coreqs_list = query_to_paragraph(coreq_query_result)
-    # exclusions_list = query_to_paragraph(exclusions_query_result)
+    coreqs_list = query_to_paragraph(coreq_query_result)
+    exclusions_list = query_to_paragraph(exclusions_query_result)
 
     info = ({
             "course_code": code,
-            # {"name": name},
-            # {"description": desc},
+            "name": name,
+            "description": desc,
+            "keywords": keywords,
             "prereqs": prereqs_list,
-            # {"coreqs": coreqs_list},
-            # {"exclusions": exclusions_list}
+            "coreqs": coreqs_list,
+            "exclusions": exclusions_list
     })
     info = jsonify(info)
 
@@ -260,7 +267,7 @@ def getProfessors(code):
 def getCareers(code):
     code = code.upper()
     with conn:
-        query_result = sqlite_config.select_all_keywords_for_course(conn, code)
+        query_result = sqlite_config.select_all_careers_for_course(conn, code)
     careers_list = query_to_paragraph(query_result)
     careers = ({"careers": careers_list})
     careers = jsonify(careers)

@@ -71,7 +71,7 @@ p {
   color: #5C779C;
 }
 
-.course-template .course-description, .course-requisite, course-professor, course-relatedcareers {
+.course-template, .course-description, .course-requisite, .course-professor, .course-relatedcareers, .course-keywords {
   margin-left: 0;
   text-align: center;
 }

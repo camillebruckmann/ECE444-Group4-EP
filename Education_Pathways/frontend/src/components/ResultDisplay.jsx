@@ -26,7 +26,7 @@ class SearchResultDisplay extends Component{
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleFilter = this.handleFilter.bind(this);
+    this.handleSubmit2 = this.handleSubmit2.bind(this);
   }
 
   handleChange(event) {
@@ -96,7 +96,7 @@ class SearchResultDisplay extends Component{
             this.setState({results: result_temp})
           } 
           else
-            if (res.data.length === 0) {
+            if (res.data == null) {
               alert("Course not found")
             }
             else {
@@ -159,9 +159,9 @@ We are looking for feedback to improve Education Pathways and make it more usefu
                   displayValue="key"
                   groupBy="cat"
                   onKeyPressFn={(event)=>{console.log(event)}}
-                  onRemove={this.handleFilter}
+                  onRemove={(event)=>{console.log(event)}}
                   onSearch={(event)=>{console.log(event)}}
-                  onSelect={this.handleFilter}
+                  onSelect={(event)=>{console.log(event)}}
                   placeholder="Click to add filters"
                   hidePlaceholder = 'true'
                   style={{
