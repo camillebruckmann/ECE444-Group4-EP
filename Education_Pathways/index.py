@@ -39,15 +39,14 @@ def search_course_by_code(s):
     res = []
     for i, course_id in enumerate(course_ids):
         d = df.iloc[course_id].to_dict()
-        pre_req_processed = d['Pre-requisites'].strip('][').replace("'", '')
         res_d = {
             '_id': i,
             'code': d['Code'],
             'name': d['Name'],
             'description': d['Course Description'],
-            'prereq': pre_req_processed,
-            'coreq': ['APS102H1, ECE102H1'],
-            'exclusion': ['APS102H1, ECE102H1'],
+            'prereq': d['Pre-requisites'].strip('][').replace("'", ''),
+            'coreq': d['Corequisite'].strip('][').replace("'", ''),
+            'exclusion': ['Exclusion'].strip('][').replace("'", ''),
             'division': d['Division'],
             'department': d['Department']
         }
@@ -69,15 +68,14 @@ def search_n_filter(s, filters):
     res = []
     for i, course_id in enumerate(course_ids):
         d = df.iloc[course_id].to_dict()
-        pre_req_processed = d['Pre-requisites'].strip('][').replace("'", '')
         res_d = {
             '_id': i,
             'code': d['Code'],
             'name': d['Name'],
             'description': d['Course Description'],
-            'prereq': pre_req_processed,
-            'coreq': ['APS102H1, ECE102H1'],
-            'exclusion': ['APS102H1, ECE102H1'],
+            'prereq': d['Pre-requisites'].strip('][').replace("'", ''),
+            'coreq': d['Corequisite'].strip('][').replace("'", ''),
+            'exclusion': ['Exclusion'].strip('][').replace("'", ''),
             'division': d['Division'],
             'department': d['Department']
         }
