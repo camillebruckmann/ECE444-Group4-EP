@@ -70,6 +70,9 @@ class CourseDescriptionPage extends Component {
     fetch("https://ep4sight.herokuapp.com/"+short_course_code+"/course_info").then(response =>
       response.json().then(info =>{
         this.setState({course_code: info.course_code})
+        this.setState({course_name: info.name})
+        this.setState({course_description: info.description})
+        this.setState({keywords: info.keywords})
       }));
 
     let syllabus_link = "http://courses.skule.ca/course/" + this.props.match.params.code
