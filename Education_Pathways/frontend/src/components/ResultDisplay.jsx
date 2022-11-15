@@ -14,11 +14,19 @@ class SearchResultDisplay extends Component{
     super();
     this.state = {
       input: "",
-      results: []
+      results: [],
+      filters: {
+        fall: "",
+        winter: "",
+        summer: "",
+        stgeorge: "",
+        mississauga: "",
+        scarborough: ""
+      }
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleSubmit2 = this.handleSubmit2.bind(this);
+    this.handleFilter = this.handleFilter.bind(this);
   }
 
   handleChange(event) {
@@ -27,23 +35,58 @@ class SearchResultDisplay extends Component{
 
   handleSubmit(event) {
     event.preventDefault();
-    this.getData(this.state.input)
+    console.log("HERE")
+    this.getData(this.state.input, this.state.filters.fall, this.state.filters.winter, this.state.filters.summer, this.state.filters.stgeorge, this.state.filters.mississauga, this.state.filters.scarborough)
   }
 
-  handleSubmit2(event) {
-    event.preventDefault();
-    this.getData("hi")
+  handleFilter(event) {
+    let temp_filters = {
+        fall: "",
+        winter: "",
+        summer: "",
+        stgeorge: "",
+        mississauga: "",
+        scarborough: ""
+    }
+    console.log(event)
+    for (let i = 0; i < event.length; i++){
+      if (event[i].cat == 'Session'){
+        if (event[i].key == 'Fall'){
+          temp_filters.fall = event[i].key
+        }else if (event[i].key == 'Winter'){
+          temp_filters.winter = event[i].key
+        } else{
+          temp_filters.summer = event[i].key
+        }    
+      }else if (event[i].cat == 'Campus'){
+        temp_filters.location = event[i].key
+        if (event[i].key == 'St. George'){
+          temp_filters.stgeorge = event[i].key
+        }else if (event[i].key == 'Mississauga'){
+          temp_filters.mississauga = event[i].key
+        } else{
+          temp_filters.scarborough = event[i].key
+        }
+      }
+    }
+    console.log(temp_filters)
+    this.setState({filters: temp_filters});
+    if (this.state.input.trim() != ""){
+      this.getData(this.state.input, temp_filters.fall, temp_filters.winter, temp_filters.summer, temp_filters.stgeorge, temp_filters.mississauga, temp_filters.scarborough)
+    }
+    
   }
 
-  getData = (input) => {
-    API.get(`/searchc?input=${input}`)
+  getData = (input, fall, winter, summer, stgeorge, mississauga, scarborough) => {
+    API.get(`/searchc?input=${input}`, {params: {fall: fall, winter: winter, summer: summer, stgeorge: stgeorge, mississauga: mississauga, scarborough: scarborough}})
     // axios.get(`https://assignment-1-starter-template.herokuapp.com/searchc?input=${input}`)
       .then(res => {
         // console.log(`it is ${res.status}`)
         if (res.status === 200) {
           this.setState({results: []})
-          console.log(res.data.length)
-          if (res.data.length > 0) {
+          if (res.data == null){
+            alert("Course not found")
+          }else if (res.data.length > 0) {
             let len = res.data.length
             let result_temp = []
             result_temp.push(<Label></Label>)
@@ -116,9 +159,9 @@ We are looking for feedback to improve Education Pathways and make it more usefu
                   displayValue="key"
                   groupBy="cat"
                   onKeyPressFn={(event)=>{console.log(event)}}
-                  onRemove={(event)=>{console.log(event)}}
+                  onRemove={this.handleFilter}
                   onSearch={(event)=>{console.log(event)}}
-                  onSelect={(event)=>{console.log(event)}}
+                  onSelect={this.handleFilter}
                   placeholder="Click to add filters"
                   hidePlaceholder = 'true'
                   style={{
