@@ -7,7 +7,7 @@ import os
 import pandas as pd
 df = pd.read_csv("resources/courses.csv")
 
-filters = {"Term": [], "Campus": []}
+filters = {"Term": [], "Campus": [], "Division":[]}
 
 import config
 app = Flask(__name__, static_folder='frontend/build')
@@ -30,6 +30,7 @@ conn = sqlite_config.create_connection(database)
 # route functions
 def search_course_by_code(s):
     # return all the courses whose course code contains the str s
+    
     course_ids = df[df['Code'].str.contains(s.upper())].index.tolist()
     if len(course_ids) == 0:
         return []
@@ -87,6 +88,10 @@ def create_filter(req):
     stgeorge = req.values['stgeorge']
     mississauga = req.values['mississauga']
     scarborough = req.values['scarborough']
+    music = req.values['music']
+    eng = req.values['eng']
+    arts = req.values['arts']
+    architecture = req.values['architecture']
 
     if (fall != ""):
         filters['Term'].append(fall)
@@ -100,15 +105,23 @@ def create_filter(req):
         filters['Campus'].append(mississauga)
     if (scarborough != ""):
         filters['Campus'].append(scarborough)
+    if (music != ""):
+        filters['Division'].append(music)
+    if (eng != ""):
+        filters['Division'].append(eng)
+    if (arts != ""):
+        filters['Division'].append(arts)
+    if (architecture != ""):
+        filters['Division'].append(architecture)
 
 
 class SearchCourse(Resource):
     def get(self):
         filters["Term"] = []
         filters["Campus"] = []
+        filters["Division"] = []
         input = request.args.get('input')
         create_filter(request)
-        print(filters)
         courses = search_n_filter(input,filters)
         if len(courses) > 0:
             try:
@@ -116,12 +129,14 @@ class SearchCourse(Resource):
                 resp.status_code = 200
                 filters["Term"] = []
                 filters["Campus"] = []
+                filters["Division"] = []
                 return resp
             except Exception as e:
                 resp = jsonify({'error': str(e)})
                 resp.status_code = 400
                 filters["Term"] = []
                 filters["Campus"] = []
+                filters["Division"] = []
                 return resp
 
     def post(self):
