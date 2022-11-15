@@ -73,6 +73,7 @@ p {
 
 .course-template .course-description, .course-requisite, course-professor, course-relatedcareers {
   margin-left: 0;
+  text-align: center;
 }
 
 .requisites-display {
