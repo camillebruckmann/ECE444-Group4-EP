@@ -66,6 +66,7 @@ class CourseDescriptionPage extends Component {
         this.setState({course_code: info.course_code})
         this.setState({course_name: info.name})
         this.setState({course_description: info.description})
+        this.setState({keywords: info.keywords})
         this.setState({prerequisites: info.prereqs})
         this.setState({corequisites: info.coreqs})
         this.setState({exclusions: info.exclusions})
@@ -186,6 +187,10 @@ class CourseDescriptionPage extends Component {
                 <img src={`data:image/jpeg;base64,${this.state.graph}`} alt="" ></img>
               </div>
             </Row>
+          </Row>
+          <Row className="col-item course-keywords">
+            <h3>Take this Course if You're Interested In:</h3>
+            <p>{this.state.keywords}</p>
           </Row>
         </Container>
       </div>

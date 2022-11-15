@@ -7,6 +7,7 @@ import os
 import pandas as pd
 df = pd.read_csv("resources/courses.csv")
 
+filters = {"Term": [], "Campus": [], "Division":[]}
 
 import config
 app = Flask(__name__, static_folder='frontend/build')
@@ -29,6 +30,7 @@ conn = sqlite_config.create_connection(database)
 # route functions
 def search_course_by_code(s):
     # return all the courses whose course code contains the str s
+    
     course_ids = df[df['Code'].str.contains(s.upper())].index.tolist()
     if len(course_ids) == 0:
         return []
@@ -51,18 +53,93 @@ def search_course_by_code(s):
         res.append(res_d)
     return res
 
+def search_n_filter(s, filters):
+    course_id = df[df['Code'].str.contains(s.upper())]
+    for key,values in filters.items():
+        if (len(values) != 0):
+            for val in values:
+                course_id = course_id[course_id[key].str.contains(val)]
+            
+    course_ids = course_id.index.tolist()
+    if len(course_ids) == 0:
+        return []
+    if len(course_ids) > 10:
+        course_ids = course_ids[:10]
+    res = []
+    for i, course_id in enumerate(course_ids):
+        d = df.iloc[course_id].to_dict()
+        res_d = {
+            '_id': i,
+            'code': d['Code'],
+            'name': d['Name'],
+            'description': "The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.",
+            'syllabus': "Course syllabus here.",
+            'prereq': ['APS101H1, ECE101H1'],
+            'coreq': ['APS102H1, ECE102H1'],
+            'exclusion': ['APS102H1, ECE102H1'],
+            
+        }
+        res.append(res_d)
+    return res
+
+def create_filter(req):
+    fall = req.values['fall']
+    winter = req.values['winter']
+    summer = req.values['summer']
+    stgeorge = req.values['stgeorge']
+    mississauga = req.values['mississauga']
+    scarborough = req.values['scarborough']
+    music = req.values['music']
+    eng = req.values['eng']
+    arts = req.values['arts']
+    architecture = req.values['architecture']
+
+    if (fall != ""):
+        filters['Term'].append(fall)
+    if (winter != ""):
+        filters['Term'].append(winter)
+    if (summer != ""):
+        filters['Term'].append(summer)
+    if (stgeorge != ""):
+        filters['Campus'].append(stgeorge)
+    if (mississauga != ""):
+        filters['Campus'].append(mississauga)
+    if (scarborough != ""):
+        filters['Campus'].append(scarborough)
+    if (music != ""):
+        filters['Division'].append(music)
+    if (eng != ""):
+        filters['Division'].append(eng)
+    if (arts != ""):
+        filters['Division'].append(arts)
+    if (architecture != ""):
+        filters['Division'].append(architecture)
+
+
 class SearchCourse(Resource):
     def get(self):
+        filters["Term"] = []
+        filters["Campus"] = []
+        filters["Division"] = []
         input = request.args.get('input')
-        courses = search_course_by_code(input)
+        create_filter(request)
+        print(filters)
+        courses = search_n_filter(input,filters)
+
         if len(courses) > 0:
             try:
                 resp = jsonify(courses)
                 resp.status_code = 200
+                filters["Term"] = []
+                filters["Campus"] = []
+                filters["Division"] = []
                 return resp
             except Exception as e:
                 resp = jsonify({'error': str(e)})
                 resp.status_code = 400
+                filters["Term"] = []
+                filters["Campus"] = []
+                filters["Division"] = []
                 return resp
 
     def post(self):
@@ -164,23 +241,28 @@ def serve(path):
 def getCourseInfo(code):
     code = code.upper()
     with conn:       
-        # name = sqlite_config.select_coursename_from_course(conn, code)
-        # desc = sqlite_config.select_description_from_course(conn, code)
+        name = sqlite_config.select_coursename_for_course(conn, code)
+        desc = sqlite_config.select_description_for_course(conn, code)
+        keywords = sqlite_config.select_all_keywords_for_course(conn, code)
         prereq_query_result = sqlite_config.select_all_prerequisites_for_course(conn, code)
-        # coreq_query_result = sqlite_config.select_all_corequisites_for_course(conn, code)
-        # exclusions_query_result = sqlite_config.select_all_exclusions_for_course(conn, code)
+        coreq_query_result = sqlite_config.select_all_corequisites_for_course(conn, code)
+        exclusions_query_result = sqlite_config.select_all_exclusions_for_course(conn, code)
 
+    name = name[0]
+    desc = desc[0][0]
+    keywords = query_to_paragraph(keywords)
     prereqs_list = query_to_paragraph(prereq_query_result)
-    # coreqs_list = query_to_paragraph(coreq_query_result)
-    # exclusions_list = query_to_paragraph(exclusions_query_result)
+    coreqs_list = query_to_paragraph(coreq_query_result)
+    exclusions_list = query_to_paragraph(exclusions_query_result)
 
     info = ({
             "course_code": code,
-            # {"name": name},
-            # {"description": desc},
+            "name": name,
+            "description": desc,
+            "keywords": keywords,
             "prereqs": prereqs_list,
-            # {"coreqs": coreqs_list},
-            # {"exclusions": exclusions_list}
+            "coreqs": coreqs_list,
+            "exclusions": exclusions_list
     })
     info = jsonify(info)
 
@@ -201,7 +283,7 @@ def getProfessors(code):
 def getCareers(code):
     code = code.upper()
     with conn:
-        query_result = sqlite_config.select_all_keywords_for_course(conn, code)
+        query_result = sqlite_config.select_all_careers_for_course(conn, code)
     careers_list = query_to_paragraph(query_result)
     careers = ({"careers": careers_list})
     careers = jsonify(careers)
