@@ -1,4 +1,4 @@
-from app import app
+from Education_Pathways.index import app
 from minor import check_course_in_minor
 from flask.testing import FlaskClient
 
@@ -27,6 +27,45 @@ def test_user_login_endpoint():
 def test_search_endpoint():
     tester = app.test_client()
     response = tester.get("/search")
+
+    assert response.status_code == 200
+
+# ---- FILTER TESTS -----
+# Note: all responses should contain None in the data attribute
+def test_filter_division():
+    tester = app.test_client()
+    response = tester.get("/searchc?input=eng&fall=&winter=&summer=&stgeorge=&mississauga=&scarborough=&music=&eng=Faculty+of+Applied+Science+%26+Engineering&arts=&architecture=")
+    assert response.status_code == 200 and response.data == None
+
+def test_filter_season():
+    tester = app.test_client()
+    response = tester.get("/searchc?input=ece&fall=&winter=&summer=Summer&stgeorge=&mississauga=&scarborough=&music=&eng=Faculty+of+Applied+Science+%26+Engineering&arts=&architecture=")
+    assert response.status_code == 200 and response.data == None
+
+def test_filter_location():
+    tester = app.test_client()
+    response = tester.get("/searchc?input=ece&fall=&winter=&summer=Summer&stgeorge=&mississauga=&scarborough=Scarborough&music=&eng=Faculty+of+Applied+Science+%26+Engineering&arts=&architecture=")
+    assert response.status_code == 200 and response.data == None
+
+# ---- GENERAL API TESTS ----
+#Camille
+def test_prof_details():
+    tester = app.test_client()
+    response = tester.get("/ECE444/prof")
+
+    assert response.status_code == 200
+
+#Camille
+def test_career_details():
+    tester = app.test_client()
+    response = tester.get("/ECE444/careers")
+
+    assert response.status_code == 200
+
+#Camille
+def test_search_functionality():
+    tester = app.test_client()
+    response = tester.get("searchc?input=ece44&fall=&winter=&summer=&stgeorge=&mississauga=&scarborough=&music=&eng=&arts=&architecture=")
 
     assert response.status_code == 200
 
